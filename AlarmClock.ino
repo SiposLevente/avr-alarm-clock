@@ -18,7 +18,7 @@
 #define NEXTBTN 7
 
 // Controlls the buzzer and the led
-#define BUZZER 11
+#define BUZZER 3
 
 // To display the correct number you have to start sending the digits from the last digit (which place represents the highest value)
 // 1 => 0x06 => 00000110 => (send 0 and shift) x 5, (send 1 and shift) x 2, (send 0 and shift)
