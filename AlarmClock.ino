@@ -17,12 +17,6 @@
 #define INCREMENTBTN 5
 #define NEXTBTN 7
 
-// These pins controll the shift register
-#define REG_VCC 6
-#define REG_DATAINPUT 8
-#define REG_STORAGECLK 9
-#define REG_SHIFTCLK 10
-
 // Controlls the buzzer and the led
 #define BUZZER 11
 
