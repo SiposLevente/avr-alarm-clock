@@ -1,3 +1,5 @@
+#include "TimeConverter.h"
+
 int TimeToNum(int digit, int time)
 {
     int returnDigit = -1;
