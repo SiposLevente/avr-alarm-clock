@@ -39,8 +39,13 @@ void initSetup();
 // Displays the time on a given digit.
 void displayDigit(int digitNum, unsigned char dotPoint = 0);
 
+// Steps every 1 second
+void timerOneSetup();
+
 void initSetup()
 {
+    sei();
+    timerOneSetup();
 }
 
 int main()
@@ -59,7 +64,7 @@ void displayDigit(int digitNum, unsigned char dotPoint = 0)
     {
         drawDot = 1;
     }
-    
+
     DDRD &= 0xF0;
     DDRD |= (0x0F & ~(1 << digitNum));
 
@@ -71,4 +76,25 @@ void displayDigit(int digitNum, unsigned char dotPoint = 0)
     {
         SendData(DigitNumbers[TimeToNum(digitNum, Time)]);
     }
+}
+
+void timerOneSetup()
+{
+    TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10);
+    OCR1A = 15625;
+    TIMSK1 = (1 << OCIE1A);
+}
+
+// Holds the value of the minute counter
+// If this variable reaches 0 it indicates that a minute has passed.
+unsigned char minuteCounter = 60;
+
+// Timer 1 interrupt
+ISR(TIMER1_COMPA_vect)
+{
+    if (!minuteCounter--)
+    {
+        minuteCounter = 60;
+    }
+    Time++;
 }
