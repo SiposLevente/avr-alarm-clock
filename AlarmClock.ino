@@ -54,33 +54,14 @@ int main()
 void displayDigit(int digitNum, unsigned char dotPoint = 0)
 {
     unsigned char drawDot = 0;
-    switch (digitNum)
+
+    if (digitNum == 1)
     {
-    case 0:
-        DDRD &= 0xF0;
-        DDRD |= 0x01;
-        break;
-
-    case 1:
-        DDRD &= 0xF0;
-        DDRD |= 0x02;
         drawDot = 1;
-        break;
-
-    case 2:
-        DDRD &= 0xF0;
-        DDRD |= 0x04;
-        break;
-
-    case 3:
-        DDRD &= 0xF0;
-        DDRD |= 0x08;
-        break;
-
-    default:
-        DDRD &= 0xF0;
-        break;
     }
+    
+    DDRD &= 0xF0;
+    DDRD |= (0x0F & ~(1 << digitNum));
 
     if (drawDot && dotPoint)
     {
