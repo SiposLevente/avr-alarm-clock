@@ -30,6 +30,8 @@ unsigned char DigitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 
 // The set alarms are stored here.
 unsigned int Alarms[9];
 
+unsigned int digitsCache[4];
+
 // Holds the time value. Default value = 43200 (12:00).
 unsigned int Time = 43200;
 
@@ -41,6 +43,10 @@ void displayDigit(int digitNum, unsigned char dotPoint = 0);
 
 // Steps every 1 second
 void timerOneSetup();
+
+// Steps every 6,08 ms
+// This timer will refresh the 7 segment display
+void timerZeroSetup();
 
 void initSetup()
 {
@@ -70,11 +76,11 @@ void displayDigit(int digitNum, unsigned char dotPoint = 0)
 
     if (drawDot && dotPoint)
     {
-        SendData(DigitNumbersDecimalDot[TimeToNum(digitNum, Time)]);
+        SendData(DigitNumbersDecimalDot[digitsCache[digitNum]]);
     }
     else
     {
-        SendData(DigitNumbers[TimeToNum(digitNum, Time)]);
+        SendData(DigitNumbers[digitsCache[digitNum]]);
     }
 }
 
@@ -85,16 +91,48 @@ void timerOneSetup()
     TIMSK1 = (1 << OCIE1A);
 }
 
+void timerZeroSetup()
+{
+    TCCR0A = (1 << COM0A1) | (1 << WGM01);
+    TCCR0B = (1 << CS02) | (1 << CS00);
+
+    // if OCR0A = 108 the refresh rate is ~144Hz
+    // if OCR0A = 250 the refresh rate is ~60Hz
+    OCR0A = 250;
+    TIMSK0 = (1 << OCIE0A);
+}
+
 // Holds the value of the minute counter
 // If this variable reaches 0 it indicates that a minute has passed.
 unsigned char minuteCounter = 60;
+unsigned char showdotPoint = 0;
 
 // Timer 1 interrupt
 ISR(TIMER1_COMPA_vect)
 {
     if (!minuteCounter--)
     {
+        for (int i = 0; i < 4; i++)
+        {
+            digitsCache[i] = TimeToNum(i, Time);
+        }
+
         minuteCounter = 60;
     }
+    showdotPoint ^= 0x01;
     Time++;
+}
+
+// Timer 0 interrupt
+ISR(TIMER0_COMPA_vect)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        unsigned char dot = 0;
+        if (i == 1 && showdotPoint)
+        {
+            dot = 1;
+        }
+        displayDigit(i, dot);
+    }
 }
