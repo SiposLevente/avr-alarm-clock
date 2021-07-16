@@ -65,6 +65,7 @@ void TimerZeroSetup();
 void InitSetup()
 {
     sei();
+    TimerZeroSetup();
     TimerOneSetup();
 }
 
