@@ -22,36 +22,44 @@
 
 // To display the correct number you have to start sending the digits from the last digit (which place represents the highest value)
 // 1 => 0x06 => 00000110 => (send 0 and shift) x 5, (send 1 and shift) x 2, (send 0 and shift)
-unsigned char DigitNumbers[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F};
+unsigned char digitNumbers[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F};
 
 // Numbers with a decimal dot.
-unsigned char DigitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 0xFD, 0xF7, 0xEF, 0xEF};
+unsigned char digitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 0xFD, 0xF7, 0xEF, 0xEF};
 
 // The set alarms are stored here.
-unsigned int Alarms[9];
+unsigned int alarms[9];
 
+// This array holds the digit values of the clock.
 unsigned int digitsCache[4];
 
 // Holds the time value. Default value = 43200 (12:00).
-unsigned int Time = 43200;
+unsigned int time = 43200;
+
+// Holds the value of the minute counter
+// If this variable reaches 0 it indicates that a minute has passed.
+unsigned char minuteCounter = 60;
+
+// if true the dot point for the given digit will light up.
+unsigned char showDotPoint = 0;
 
 // Initial setup. Sets the pins and other basic variables to the default state.
-void initSetup();
+void InitSetup();
 
 // Displays the time on a given digit.
-void displayDigit(int digitNum, unsigned char dotPoint = 0);
+void DisplayDigit(int digitNum, unsigned char dotPoint = 0);
 
 // Steps every 1 second
-void timerOneSetup();
+void TimerOneSetup();
 
 // Steps every 6,08 ms
 // This timer will refresh the 7 segment display
-void timerZeroSetup();
+void TimerZeroSetup();
 
-void initSetup()
+void InitSetup()
 {
     sei();
-    timerOneSetup();
+    TimerOneSetup();
 }
 
 int main()
@@ -62,7 +70,7 @@ int main()
     return 0;
 }
 
-void displayDigit(int digitNum, unsigned char dotPoint = 0)
+void DisplayDigit(int digitNum, unsigned char dotPoint = 0)
 {
     unsigned char drawDot = 0;
 
@@ -76,22 +84,22 @@ void displayDigit(int digitNum, unsigned char dotPoint = 0)
 
     if (drawDot && dotPoint)
     {
-        SendData(DigitNumbersDecimalDot[digitsCache[digitNum]]);
+        SendData(digitNumbersDecimalDot[digitsCache[digitNum]]);
     }
     else
     {
-        SendData(DigitNumbers[digitsCache[digitNum]]);
+        SendData(digitNumbers[digitsCache[digitNum]]);
     }
 }
 
-void timerOneSetup()
+void TimerOneSetup()
 {
     TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10);
     OCR1A = 15625;
     TIMSK1 = (1 << OCIE1A);
 }
 
-void timerZeroSetup()
+void TimerZeroSetup()
 {
     TCCR0A = (1 << COM0A1) | (1 << WGM01);
     TCCR0B = (1 << CS02) | (1 << CS00);
@@ -102,11 +110,6 @@ void timerZeroSetup()
     TIMSK0 = (1 << OCIE0A);
 }
 
-// Holds the value of the minute counter
-// If this variable reaches 0 it indicates that a minute has passed.
-unsigned char minuteCounter = 60;
-unsigned char showdotPoint = 0;
-
 // Timer 1 interrupt
 ISR(TIMER1_COMPA_vect)
 {
@@ -114,13 +117,13 @@ ISR(TIMER1_COMPA_vect)
     {
         for (int i = 0; i < 4; i++)
         {
-            digitsCache[i] = TimeToNum(i, Time);
+            digitsCache[i] = TimeToNum(i, time);
         }
 
         minuteCounter = 60;
     }
-    showdotPoint ^= 0x01;
-    Time++;
+    showDotPoint ^= 0x01;
+    time++;
 }
 
 // Timer 0 interrupt
@@ -129,10 +132,10 @@ ISR(TIMER0_COMPA_vect)
     for (int i = 0; i < 4; i++)
     {
         unsigned char dot = 0;
-        if (i == 1 && showdotPoint)
+        if (i == 1 && showDotPoint)
         {
             dot = 1;
         }
-        displayDigit(i, dot);
+        DisplayDigit(i, dot);
     }
 }
