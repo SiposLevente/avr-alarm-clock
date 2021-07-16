@@ -43,6 +43,12 @@ unsigned char minuteCounter = 60;
 // if true the dot point for the given digit will light up.
 unsigned char showDotPoint = 0;
 
+// Holds the value of the selected mode.
+unsigned char currentMode = 0;
+
+// Determines if the current mode is in an alternative mode
+unsigned char altMode = 0;
+
 // Initial setup. Sets the pins and other basic variables to the default state.
 void InitSetup();
 
