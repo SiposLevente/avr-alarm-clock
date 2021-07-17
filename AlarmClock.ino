@@ -8,14 +8,14 @@
 // Uses DDRD/PIND - Pull up inputs
 #define DIGITSELECT_0 0
 #define DIGITSELECT_1 1
-#define DIGITSELECT_2 2
-#define DIGITSELECT_3 3
+#define DIGITSELECT_2 4
+#define DIGITSELECT_3 5
 
 // Buttons used to operate the alarm clock
 // Uses DDRD/PIND - Pull up inputs
-#define MODESELECTBTN 4
-#define INCREMENTBTN 5
-#define NEXTBTN 7
+#define NEXTBTN 2
+#define INCREMENTBTN 3
+#define MODESELECTBTN 7
 
 // Controlls the buzzer and the led
 #define BUZZER 3
@@ -58,9 +58,11 @@ void DisplayDigit(int digitNum, unsigned char dotPoint = 0);
 // Steps every 1 second
 void TimerOneSetup();
 
-// Steps every 6,08 ms
 // This timer will refresh the 7 segment display
 void TimerZeroSetup();
+
+// External interrupt setup. Detects button presses.
+void ExtInterruptSetup();
 
 void InitSetup()
 {
@@ -117,6 +119,13 @@ void TimerZeroSetup()
     TIMSK0 = (1 << OCIE0A);
 }
 
+void ExtInterruptSetup()
+{
+    EIMSK |= (1 << INT0) | (1 << INT1);
+    PCICR |= (1 << PCIE2);
+    PCMSK2 |= (1 << PCINT23);
+}
+
 // Timer 1 interrupt
 ISR(TIMER1_COMPA_vect)
 {
@@ -145,4 +154,22 @@ ISR(TIMER0_COMPA_vect)
         }
         DisplayDigit(i, dot);
     }
+}
+
+// Next button interrupt
+// Low level trigger
+ISR(INT0_vect)
+{
+}
+
+// Increment button interrupt
+// Low level trigger
+ISR(INT1_vect)
+{
+}
+
+// Mode select button interrupt
+// Logic change trigger
+ISR(PCINT2_vect)
+{
 }
