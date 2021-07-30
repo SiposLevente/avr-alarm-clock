@@ -46,8 +46,14 @@ unsigned char showDotPoint = 0;
 // Holds the value of the selected mode.
 unsigned char currentMode = 0;
 
-// Determines if the current mode is in an alternative mode
+// Determines if the current mode is in an alternative mode.
 unsigned char altMode = 0;
+
+// 1 if mode button is pressed.
+unsigned char btnPress = 0;
+
+// Counts how many seconds were the button pressed.
+unsigned char btnHoldCounter = 0;
 
 // Initial setup. Sets the pins and other basic variables to the default state.
 void InitSetup();
@@ -139,6 +145,13 @@ ISR(TIMER1_COMPA_vect)
 
         minuteCounter = 60;
     }
+
+    // If the mode button is pressed the hold counter counts.
+    if (btnPress)
+    {
+        btnHoldCounter++;
+    }
+    
     showDotPoint ^= 0x01;
     time++;
 }
@@ -173,4 +186,13 @@ ISR(INT1_vect)
 // Logic change trigger
 ISR(PCINT2_vect)
 {
+    btnPress ^= 0x01;
+    if (btnHoldCounter >= 2)
+    {
+        // Mode switch
+    }
+    else
+    {
+        // Alt mode
+    }
 }
