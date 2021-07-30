@@ -69,6 +69,7 @@ void InitSetup()
     sei();
     TimerZeroSetup();
     TimerOneSetup();
+    ExtInterruptSetup();
 }
 
 int main()
