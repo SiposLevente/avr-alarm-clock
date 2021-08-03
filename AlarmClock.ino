@@ -5,7 +5,7 @@
 
 // Controlls the 7 segment display
 // If set to 0 the digit will light up
-// Uses DDRD/PIND - Pull up inputs
+// Uses DDRD, controlls the transistors
 #define DIGITSELECT_0 0
 #define DIGITSELECT_1 1
 #define DIGITSELECT_2 4
@@ -76,6 +76,9 @@ void InitSetup()
     TimerZeroSetup();
     TimerOneSetup();
     ExtInterruptSetup();
+    DDRD |= 0x73;
+    PORTD |= 0xCC;
+    DDRB |= 0x0F;
 }
 
 int main()
@@ -151,7 +154,7 @@ ISR(TIMER1_COMPA_vect)
     {
         btnHoldCounter++;
     }
-    
+
     showDotPoint ^= 0x01;
     time++;
 }
@@ -159,14 +162,30 @@ ISR(TIMER1_COMPA_vect)
 // Timer 0 interrupt
 ISR(TIMER0_COMPA_vect)
 {
-    for (int i = 0; i < 4; i++)
+    switch (currentMode)
     {
-        unsigned char dot = 0;
-        if (i == 1 && showDotPoint)
+    case 0:
+        if (altMode == 0)
         {
-            dot = 1;
+            for (int i = 0; i < 4; i++)
+            {
+                unsigned char dot = 0;
+                if (i == 1 && showDotPoint)
+                {
+                    dot = 1;
+                }
+                DisplayDigit(i, dot);
+            }
         }
-        DisplayDigit(i, dot);
+        else
+        {
+            // Displays year for 5 sec then month and day for 5 sec
+        }
+
+        break;
+
+    default:
+        break;
     }
 }
 
