@@ -98,8 +98,27 @@ void DisplayDigit(int digitNum, unsigned char dotPoint = 0)
         drawDot = 1;
     }
 
-    DDRD &= 0xF0;
-    DDRD |= (0x0F & ~(1 << digitNum));
+    DDRD &= 0xCC;
+    switch (digitNum)
+    {
+    case 0:
+        DDRD |= (1 << DIGITSELECT_0);
+        break;
+
+    case 1:
+        DDRD |= (1 << DIGITSELECT_1);
+        break;
+
+    case 2:
+        DDRD |= (1 << DIGITSELECT_2);
+        break;
+
+    case 3:
+        DDRD |= (1 << DIGITSELECT_3);
+        break;
+    default:
+        break;
+    }
 
     if (drawDot && dotPoint)
     {
