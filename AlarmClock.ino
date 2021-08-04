@@ -72,6 +72,7 @@ void ExtInterruptSetup();
 
 void InitSetup()
 {
+    CacheDigits(digitsCache, time);
     sei();
     TimerZeroSetup();
     TimerOneSetup();
@@ -160,10 +161,7 @@ ISR(TIMER1_COMPA_vect)
 {
     if (!minuteCounter--)
     {
-        for (int i = 0; i < 4; i++)
-        {
-            digitsCache[i] = TimeToNum(i, time);
-        }
+        CacheDigits(digitsCache, time);
 
         minuteCounter = 60;
     }
