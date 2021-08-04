@@ -27,3 +27,11 @@ int TimeToNum(int digit, int time)
 
     return returnDigit;
 }
+
+void CacheDigits(unsigned int digitsCache[], unsigned int time)
+{
+    for (int i = 0; i < 4; i++)
+    {
+        digitsCache[i] = TimeToNum(i, time);
+    }
+}
