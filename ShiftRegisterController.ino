@@ -7,7 +7,7 @@ void SendData(unsigned char data)
     for (int i = 0; i < 8; i++)
     {
         PORTB &= 0xF8;
-        if (data & (1 << i))
+        if (data & (1 << 7-i))
         {
             PORTB |= (1 << REG_DATAINPUT);
         }
