@@ -6,10 +6,10 @@
 // Controlls the 7 segment display
 // If set to 0 the digit will light up
 // Uses DDRD, controlls the transistors
-#define DIGITSELECT_0 0
-#define DIGITSELECT_1 1
-#define DIGITSELECT_2 4
-#define DIGITSELECT_3 5
+#define DIGITSELECT_0 4
+#define DIGITSELECT_1 5
+#define DIGITSELECT_2 6
+#define DIGITSELECT_3 7
 
 // Buttons used to operate the alarm clock
 // Uses DDRD/PIND - Pull up inputs
@@ -77,9 +77,10 @@ void InitSetup()
     TimerZeroSetup();
     TimerOneSetup();
     ExtInterruptSetup();
-    DDRD |= 0x73;
-    PORTD |= 0xCC;
+    DDRD |= 0xF0;
+    PORTD |= 0x0C;
     DDRB |= 0x0F;
+    PORTB |= 0x10;
 }
 
 int main()
@@ -99,27 +100,9 @@ void DisplayDigit(int digitNum, unsigned char dotPoint = 0)
         drawDot = 1;
     }
 
-    DDRD &= 0xCC;
-    switch (digitNum)
-    {
-    case 0:
-        DDRD |= (1 << DIGITSELECT_0);
-        break;
+    PORTD &= 0xCC;
 
-    case 1:
-        DDRD |= (1 << DIGITSELECT_1);
-        break;
-
-    case 2:
-        DDRD |= (1 << DIGITSELECT_2);
-        break;
-
-    case 3:
-        DDRD |= (1 << DIGITSELECT_3);
-        break;
-    default:
-        break;
-    }
+    PORTD |= (1 << 4 + digitNum);
 
     if (drawDot && dotPoint)
     {
@@ -152,8 +135,8 @@ void TimerZeroSetup()
 void ExtInterruptSetup()
 {
     EIMSK |= (1 << INT0) | (1 << INT1);
-    PCICR |= (1 << PCIE2);
-    PCMSK2 |= (1 << PCINT23);
+    PCICR |= (1 << PCIE0);
+    PCMSK0 |= (1 << PCINT4);
 }
 
 // Timer 1 interrupt
@@ -220,7 +203,7 @@ ISR(INT1_vect)
 
 // Mode select button interrupt
 // Logic change trigger
-ISR(PCINT2_vect)
+ISR(PCINT0_vect)
 {
     btnPress ^= 0x01;
     if (btnHoldCounter >= 2)
