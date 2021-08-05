@@ -1,8 +1,8 @@
 #include "TimeConverter.h"
 
-int TimeToNum(int digit, int time)
+unsigned int TimeToNum(int digit, unsigned int time)
 {
-    int returnDigit = -1;
+    unsigned int returnDigit = -1;
     switch (digit)
     {
     case 0:
