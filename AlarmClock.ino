@@ -73,10 +73,10 @@ void ExtInterruptSetup();
 void InitSetup()
 {
     CacheDigits(digitsCache, time);
-    sei();
     TimerZeroSetup();
     TimerOneSetup();
     ExtInterruptSetup();
+    sei();
     DDRD |= 0xF0;
     PORTD |= 0x0C;
     DDRB |= 0x0F;
@@ -100,7 +100,7 @@ void DisplayDigit(int digitNum, unsigned char dotPoint = 0)
         drawDot = 1;
     }
 
-    PORTD &= 0xCC;
+    PORTD &= 0x0F;
 
     PORTD |= (1 << 4 + digitNum);
 
