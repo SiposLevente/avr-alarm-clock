@@ -25,7 +25,7 @@
 unsigned char digitNumbers[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F};
 
 // Numbers with a decimal dot.
-unsigned char digitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 0xFD, 0xF7, 0xEF, 0xEF};
+unsigned char digitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 0xFD, 0x87, 0xFF, 0xEF};
 
 // The set alarms are stored here.
 unsigned int alarms[9];
@@ -85,6 +85,7 @@ void InitSetup()
 
 int main()
 {
+    InitSetup();
     while (1)
     {
     }
@@ -102,7 +103,7 @@ void DisplayDigit(int digitNum, unsigned char dotPoint = 0)
 
     PORTD &= 0x0F;
 
-    PORTD |= (1 << 4 + digitNum);
+    PORTD |= (1 << digitNum + DIGITSELECT_0);
 
     if (drawDot && dotPoint)
     {
@@ -118,6 +119,7 @@ void TimerOneSetup()
 {
     TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10);
     OCR1A = 15625;
+    //OCR1A = 15;
     TIMSK1 = (1 << OCIE1A);
 }
 
@@ -126,9 +128,7 @@ void TimerZeroSetup()
     TCCR0A = (1 << COM0A1) | (1 << WGM01);
     TCCR0B = (1 << CS02) | (1 << CS00);
 
-    // if OCR0A = 108 the refresh rate is ~144Hz
-    // if OCR0A = 250 the refresh rate is ~60Hz
-    OCR0A = 250;
+    OCR0A = 80;
     TIMSK0 = (1 << OCIE0A);
 }
 
@@ -159,6 +159,8 @@ ISR(TIMER1_COMPA_vect)
     time++;
 }
 
+unsigned char currDigit = 2;
+
 // Timer 0 interrupt
 ISR(TIMER0_COMPA_vect)
 {
@@ -167,15 +169,13 @@ ISR(TIMER0_COMPA_vect)
     case 0:
         if (altMode == 0)
         {
-            for (int i = 0; i < 4; i++)
+
+            unsigned char dot = 0;
+            if (currDigit == 1 && showDotPoint)
             {
-                unsigned char dot = 0;
-                if (i == 1 && showDotPoint)
-                {
-                    dot = 1;
-                }
-                DisplayDigit(i, dot);
+                dot = 1;
             }
+            DisplayDigit(currDigit, dot);
         }
         else
         {
@@ -186,6 +186,15 @@ ISR(TIMER0_COMPA_vect)
 
     default:
         break;
+    }
+
+    if (currDigit == 3)
+    {
+        currDigit = 0;
+    }
+    else
+    {
+        currDigit++;
     }
 }
 
