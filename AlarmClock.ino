@@ -3,9 +3,9 @@
 #include "TimeConverter.h"
 #include "ShiftRegisterController.h"
 
-// Controlls the 7 segment display
+// Controlls the 7 segment display digits
 // If set to 0 the digit will light up
-// Uses DDRD, controlls the transistors
+// Uses DDRD.
 #define DIGITSELECT_0 4
 #define DIGITSELECT_1 5
 #define DIGITSELECT_2 6
@@ -18,6 +18,7 @@
 #define MODESELECTBTN 7
 
 // Controlls the buzzer and the led
+// DDRB
 #define BUZZER 3
 
 // To display the correct number you have to start sending the digits from the last digit (which place represents the highest value)
@@ -40,7 +41,7 @@ int time = 720;
 // If this variable reaches 0 it indicates that a minute has passed.
 unsigned char minuteCounter = 60;
 
-// if true the dot point for the given digit will light up.
+// If true the dot point for the given digit will light up.
 unsigned char showDotPoint = 0;
 
 // Holds the value of the selected mode.
