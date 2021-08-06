@@ -6,19 +6,19 @@ int TimeToNum(int digit, int time)
     switch (digit)
     {
     case 0:
-        returnDigit = time / 60 / 10;
+        returnDigit = time / 600;
         break;
 
     case 1:
-        returnDigit = (time / 60) - (TimeToNum(0, time) * 10);
+        returnDigit = (time / 60) - TimeToNum(0, time) * 10;
         break;
 
     case 2:
-        returnDigit = (time % (360)) / 10;
+        returnDigit = (time % 60) / 10;
         break;
 
     case 3:
-        returnDigit = ((time % (360)) - (TimeToNum(2, time) * 10));
+        returnDigit = (time % 60) - TimeToNum(2, time) * 10;
         break;
 
     default:
