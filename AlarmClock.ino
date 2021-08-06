@@ -28,13 +28,13 @@ unsigned char digitNumbers[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07
 unsigned char digitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 0xFD, 0x87, 0xFF, 0xEF};
 
 // The set alarms are stored here.
-unsigned int alarms[9];
+int alarms[9];
 
 // This array holds the digit values of the clock.
 unsigned int digitsCache[4];
 
 // Holds the time value. Default value = 43200 (12:00).
-unsigned int time = 43200;
+int time = 43200;
 
 // Holds the value of the minute counter
 // If this variable reaches 0 it indicates that a minute has passed.
@@ -59,7 +59,7 @@ unsigned char btnHoldCounter = 0;
 void InitSetup();
 
 // Displays the time on a given digit.
-void DisplayDigit(int digitNum, unsigned char dotPoint = 0);
+void DisplayDigit(int digitNum, unsigned char dotPoint);
 
 // Steps every 1 second
 void TimerOneSetup();
@@ -86,6 +86,7 @@ void InitSetup()
 int main()
 {
     InitSetup();
+
     while (1)
     {
     }
@@ -94,18 +95,11 @@ int main()
 
 void DisplayDigit(int digitNum, unsigned char dotPoint = 0)
 {
-    unsigned char drawDot = 0;
-
-    if (digitNum == 1)
-    {
-        drawDot = 1;
-    }
-
     PORTD &= 0x0F;
 
     PORTD |= (1 << digitNum + DIGITSELECT_0);
 
-    if (drawDot && dotPoint)
+    if (digitNum == 1 && dotPoint)
     {
         SendData(digitNumbersDecimalDot[digitsCache[digitNum]]);
     }
@@ -119,7 +113,7 @@ void TimerOneSetup()
 {
     TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10);
     OCR1A = 15625;
-    //OCR1A = 15;
+    //OCR1A = 5;
     TIMSK1 = (1 << OCIE1A);
 }
 
@@ -143,7 +137,7 @@ void ExtInterruptSetup()
 ISR(TIMER1_COMPA_vect)
 {
     if (!minuteCounter--)
-    {
+    {        
         CacheDigits(digitsCache, time);
 
         minuteCounter = 60;
@@ -159,7 +153,7 @@ ISR(TIMER1_COMPA_vect)
     time++;
 }
 
-unsigned char currDigit = 2;
+unsigned char currDigit = 0;
 
 // Timer 0 interrupt
 ISR(TIMER0_COMPA_vect)
