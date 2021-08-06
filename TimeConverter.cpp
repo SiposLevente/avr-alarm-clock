@@ -1,6 +1,6 @@
 #include "TimeConverter.h"
 
-unsigned int TimeToNum(int digit, unsigned int time)
+unsigned int TimeToNum(int digit, int time)
 {
     unsigned int returnDigit = -1;
     switch (digit)
@@ -28,7 +28,7 @@ unsigned int TimeToNum(int digit, unsigned int time)
     return returnDigit;
 }
 
-void CacheDigits(unsigned int digitsCache[], unsigned int time)
+void CacheDigits(unsigned int digitsCache[], int time)
 {
     for (int i = 0; i < 4; i++)
     {
