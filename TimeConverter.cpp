@@ -14,11 +14,11 @@ int TimeToNum(int digit, int time)
         break;
 
     case 2:
-        returnDigit = (time % (3600)) / 10;
+        returnDigit = (time % (360)) / 10;
         break;
 
     case 3:
-        returnDigit = ((time % (3600)) - (TimeToNum(2, time) * 10));
+        returnDigit = ((time % (360)) - (TimeToNum(2, time) * 10));
         break;
 
     default:
