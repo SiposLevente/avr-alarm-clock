@@ -137,7 +137,12 @@ void ExtInterruptSetup()
 ISR(TIMER1_COMPA_vect)
 {
     if (!minuteCounter--)
-    {        
+    {
+        if (time >= 86400)
+        {
+            time = 0;
+        }
+        
         CacheDigits(digitsCache, time);
 
         minuteCounter = 60;
