@@ -4,4 +4,4 @@
 // (Time: 43200 [12:00]) -> TimeToNum(1) => output = 2
 unsigned int TimeToNum(int digit, int time);
 
-void CacheDigits(unsigned int digitsCache[], int time);
+void CacheDigits(unsigned int digitsCache[], int time); 
