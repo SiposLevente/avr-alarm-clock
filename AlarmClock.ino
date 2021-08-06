@@ -114,7 +114,7 @@ void TimerOneSetup()
 {
     TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10);
     OCR1A = 15625;
-    //OCR1A = 40;
+    //OCR1A = 5;
     TIMSK1 = (1 << OCIE1A);
 }
 
@@ -122,7 +122,7 @@ void TimerTwoSetup()
 {
     TCCR2A |= (1 << COM2A1) | (1 << WGM21);
     TCCR2B |= (1 << CS22) | (1 << CS21) | (1 << CS20);
-    OCR2A = 80;
+    OCR2A = 75;
     TIMSK2 |= (1 << OCIE2A);
 }
 
