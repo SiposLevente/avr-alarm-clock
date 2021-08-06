@@ -145,7 +145,7 @@ ISR(TIMER1_COMPA_vect)
         }
 
         CacheDigits(digitsCache, time);
-
+        time++;
         minuteCounter = 60;
     }
 
@@ -156,7 +156,6 @@ ISR(TIMER1_COMPA_vect)
     }
 
     showDotPoint ^= 0x01;
-    time++;
 }
 
 unsigned char currDigit = 0;
