@@ -1,24 +1,24 @@
 #include "TimeConverter.h"
 
-unsigned int TimeToNum(int digit, int time)
+int TimeToNum(int digit, int time)
 {
-    unsigned int returnDigit = -1;
+    int returnDigit = -1;
     switch (digit)
     {
     case 0:
-        returnDigit = time / 60 / 60 / 10;
+        returnDigit = time / 60 / 10;
         break;
 
     case 1:
-        returnDigit = (time / 60 / 60) - (TimeToNum(0, time) * 10);
+        returnDigit = (time / 60) - (TimeToNum(0, time) * 10);
         break;
 
     case 2:
-        returnDigit = (time % (3600)) / 60 / 10;
+        returnDigit = (time % (3600)) / 10;
         break;
 
     case 3:
-        returnDigit = ((time % (3600) / 60) - (TimeToNum(2, time) * 10));
+        returnDigit = ((time % (3600)) - (TimeToNum(2, time) * 10));
         break;
 
     default:

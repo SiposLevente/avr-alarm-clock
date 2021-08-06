@@ -33,8 +33,8 @@ int alarms[9];
 // This array holds the digit values of the clock.
 unsigned int digitsCache[4];
 
-// Holds the time value. Default value = 43200 (12:00).
-int time = 43200;
+// Holds the time value in minutes. Default value = 720 (12:00).
+int time = 720;
 
 // Holds the value of the minute counter
 // If this variable reaches 0 it indicates that a minute has passed.
@@ -113,7 +113,7 @@ void TimerOneSetup()
 {
     TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10);
     OCR1A = 15625;
-    //OCR1A = 5;
+    //OCR1A = 40;
     TIMSK1 = (1 << OCIE1A);
 }
 
@@ -138,7 +138,7 @@ ISR(TIMER1_COMPA_vect)
 {
     if (!minuteCounter--)
     {
-        if (time >= 86400)
+        if (time >= 1440)
         {
             time = 0;
         }
