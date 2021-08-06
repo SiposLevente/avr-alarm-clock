@@ -66,7 +66,7 @@ void DisplayDigit(int digitNum, unsigned char dotPoint);
 void TimerOneSetup();
 
 // This timer will refresh the 7 segment display
-void TimerZeroSetup();
+void TimerTwoSetup();
 
 // External interrupt setup. Detects button presses.
 void ExtInterruptSetup();
@@ -74,8 +74,8 @@ void ExtInterruptSetup();
 void InitSetup()
 {
     CacheDigits(digitsCache, time);
-    TimerZeroSetup();
     TimerOneSetup();
+    TimerTwoSetup();
     ExtInterruptSetup();
     sei();
     DDRD |= 0xF0;
@@ -118,13 +118,12 @@ void TimerOneSetup()
     TIMSK1 = (1 << OCIE1A);
 }
 
-void TimerZeroSetup()
+void TimerTwoSetup()
 {
-    TCCR0A = (1 << COM0A1) | (1 << WGM01);
-    TCCR0B = (1 << CS02) | (1 << CS00);
-
-    OCR0A = 80;
-    TIMSK0 = (1 << OCIE0A);
+    TCCR2A |= (1 << COM2A1) | (1 << WGM21);
+    TCCR2B |= (1 << CS22) | (1 << CS21) | (1 << CS20);
+    OCR2A = 80;
+    TIMSK2 |= (1 << OCIE2A);
 }
 
 void ExtInterruptSetup()
@@ -160,8 +159,8 @@ ISR(TIMER1_COMPA_vect)
 
 unsigned char currDigit = 0;
 
-// Timer 0 interrupt
-ISR(TIMER0_COMPA_vect)
+// Timer 2 interrupt
+ISR(TIMER2_COMPA_vect)
 {
     switch (currentMode)
     {
