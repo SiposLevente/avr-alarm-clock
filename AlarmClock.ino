@@ -143,8 +143,8 @@ ISR(TIMER1_COMPA_vect)
             time = 0;
         }
 
-        CacheDigits(digitsCache, time);
         time++;
+        CacheDigits(digitsCache, time);
         minuteCounter = 60;
     }
 
