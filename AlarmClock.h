@@ -20,6 +20,10 @@
 // 1 => 0x06 => 00000110 => (send 0 and shift) x 5, (send 1 and shift) x 2, (send 0 and shift)
 unsigned char digitNumbers[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F};
 
+// Stores the values of the hex representations of the used letters
+// Letters: A, L, r
+unsigned char digitLetters[3] = {0x77, 0x38, 0x50};
+
 // Numbers with a decimal dot.
 unsigned char digitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 0xFD, 0x87, 0xFF, 0xEF};
 
