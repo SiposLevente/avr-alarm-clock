@@ -4,45 +4,6 @@
 #include "ShiftRegisterController.h"
 #include "AlarmClock.h"
 
-void InitSetup()
-{
-    CacheDigits(digitsCache, time);
-    TimerOneSetup();
-    TimerTwoSetup();
-    ExtInterruptSetup();
-    sei();
-    DDRD |= 0xF0;
-    PORTD |= 0x0C;
-    DDRB |= 0x0F;
-    PORTB |= 0x10;
-}
-
-int main()
-{
-    InitSetup();
-
-    while (1)
-    {
-    }
-    return 0;
-}
-
-void DisplayDigit(int digitNum, unsigned char dotPoint = 0)
-{
-    PORTD &= 0x0F;
-
-    PORTD |= (1 << digitNum + DIGITSELECT_0);
-
-    if (digitNum == 1 && dotPoint)
-    {
-        SendData(digitNumbersDecimalDot[digitsCache[digitNum]]);
-    }
-    else
-    {
-        SendData(digitNumbers[digitsCache[digitNum]]);
-    }
-}
-
 void TimerOneSetup()
 {
     TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10);
@@ -64,6 +25,45 @@ void ExtInterruptSetup()
     EIMSK |= (1 << INT0) | (1 << INT1);
     PCICR |= (1 << PCIE0);
     PCMSK0 |= (1 << PCINT4);
+}
+
+int main()
+{
+    InitSetup();
+
+    while (1)
+    {
+    }
+    return 0;
+}
+
+void InitSetup()
+{
+    CacheDigits(digitsCache, time);
+    TimerOneSetup();
+    TimerTwoSetup();
+    ExtInterruptSetup();
+    sei();
+    DDRD |= 0xF0;
+    PORTD |= 0x0C;
+    DDRB |= 0x0F;
+    PORTB |= 0x10;
+}
+
+void DisplayDigit(int digitNum, unsigned char dotPoint = 0)
+{
+    PORTD &= 0x0F;
+
+    PORTD |= (1 << digitNum + DIGITSELECT_0);
+
+    if (digitNum == 1 && dotPoint)
+    {
+        SendData(digitNumbersDecimalDot[digitsCache[digitNum]]);
+    }
+    else
+    {
+        SendData(digitNumbers[digitsCache[digitNum]]);
+    }
 }
 
 // Timer 1 interrupt
