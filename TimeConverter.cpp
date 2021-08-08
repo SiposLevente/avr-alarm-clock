@@ -36,7 +36,7 @@ void LeapYearCheck()
         {
             isLeapYear = 1;
         }
-        if (year % 100 == 0)
+        if (year % 400 == 0)
         {
             isLeapYear = 0;
         }
