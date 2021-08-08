@@ -4,9 +4,6 @@
 // (Time: 43200 [12:00]) -> TimeToNum(1) => output = 2
 int TimeToNum(int digit);
 
-// Caches the currently shown digits.
-void CacheDigits(unsigned int digitsCache[]);
-
 // Days in each month.
 unsigned int monthDayNum[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 

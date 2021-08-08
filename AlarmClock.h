@@ -61,6 +61,9 @@ void InitSetup();
 // Displays the time on a given digit.
 void DisplayDigit(int digitNum, unsigned char dotPoint);
 
+// Caches the currently shown digits.
+void CacheDigits(unsigned int digitsCache[]);
+
 // Steps every 1 second
 void TimerOneSetup();
 

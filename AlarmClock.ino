@@ -50,6 +50,14 @@ void InitSetup()
     PORTB |= 0x10;
 }
 
+void CacheDigits(unsigned int digitsCache[])
+{
+    for (int i = 0; i < 4; i++)
+    {
+        digitsCache[i] = TimeToNum(i);
+    }
+}
+
 void DisplayDigit(int digitNum, unsigned char dotPoint = 0)
 {
     PORTD &= 0x0F;
