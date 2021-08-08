@@ -37,30 +37,35 @@ int DateToNum(int digit)
         {
             return 1;
         }
+        return 0;
         break;
 
     case 1:
+    {
         int tempMonth = GetMonth();
         if (tempMonth > 9)
         {
             return tempMonth - 10;
         }
-
-        break;
+        return tempMonth;
+    }
+    break;
 
     case 2:
         return GetDay() / 10;
         break;
 
     case 3:
+    {
         int tempDay = GetDay();
-        return tempDay - (tempDay / 10);
-        break;
+        return tempDay - (tempDay / 10) * 10;
+    }
+    break;
 
     default:
-        return -1;
         break;
     }
+    return -1;
 }
 
 int YearToNum(int digit)
