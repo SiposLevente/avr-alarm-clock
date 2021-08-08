@@ -5,7 +5,6 @@ This project aims to create an alarm clock with the use of an ATmega328P microco
 * Displays the time on a 4-digit 7-segment display.
 * Adjustable time with the use of buttons.
 * 9 settable alarms.
-* Adjustable brightness. Can be set to automatic brightness control.
 
 ## Manual: (WIP)
 
@@ -17,7 +16,6 @@ Cycling between modes happens when the "Mode button" is held down for 2 seconds.
 |-----|--------------------|----------------------------------|
 |0    |Displays time       |Displays the date                 |
 |1    |Cycle between alarms|Edit selected alarm               |
-|2    |Set brightness     |Enable automatic brightness control|
 
 
 ## Parts list: (WIP)
