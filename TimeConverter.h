@@ -4,6 +4,9 @@
 // (Time: 43200 [12:00]) -> TimeToNum(1) => output = 2
 int TimeToNum(int digit);
 
+// Checks if the current year is a leap year, if yes it sets the "isLeapYear" variable
+void LeapYearCheck();
+
 // Days in each month.
 unsigned int monthDayNum[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 

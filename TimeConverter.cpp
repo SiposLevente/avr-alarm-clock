@@ -28,10 +28,17 @@ int TimeToNum(int digit)
     return returnDigit;
 }
 
-void CacheDigits(unsigned int digitsCache[])
+void LeapYearCheck()
 {
-    for (int i = 0; i < 4; i++)
+    if (year % 4 == 0)
     {
-        digitsCache[i] = TimeToNum(i);
+        if (year % 100 != 0)
+        {
+            isLeapYear = 1;
+        }
+        if (year % 100 == 0)
+        {
+            isLeapYear = 0;
+        }
     }
 }
