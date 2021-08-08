@@ -1,6 +1,6 @@
 #include "TimeConverter.h"
 
-int TimeToNum(int digit, int time)
+int TimeToNum(int digit)
 {
     int returnDigit = -1;
     switch (digit)
@@ -10,7 +10,7 @@ int TimeToNum(int digit, int time)
         break;
 
     case 1:
-        returnDigit = (time / 60) - TimeToNum(0, time) * 10;
+        returnDigit = (time / 60) - TimeToNum(0) * 10;
         break;
 
     case 2:
@@ -18,7 +18,7 @@ int TimeToNum(int digit, int time)
         break;
 
     case 3:
-        returnDigit = (time % 60) - TimeToNum(2, time) * 10;
+        returnDigit = (time % 60) - TimeToNum(2) * 10;
         break;
 
     default:
@@ -28,10 +28,10 @@ int TimeToNum(int digit, int time)
     return returnDigit;
 }
 
-void CacheDigits(unsigned int digitsCache[], int time)
+void CacheDigits(unsigned int digitsCache[])
 {
     for (int i = 0; i < 4; i++)
     {
-        digitsCache[i] = TimeToNum(i, time);
+        digitsCache[i] = TimeToNum(i);
     }
 }

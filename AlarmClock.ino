@@ -39,7 +39,7 @@ int main()
 
 void InitSetup()
 {
-    CacheDigits(digitsCache, time);
+    CacheDigits(digitsCache);
     TimerOneSetup();
     TimerTwoSetup();
     ExtInterruptSetup();
@@ -77,7 +77,7 @@ ISR(TIMER1_COMPA_vect)
         }
 
         time++;
-        CacheDigits(digitsCache, time);
+        CacheDigits(digitsCache);
         minuteCounter = 60;
     }
 

@@ -33,9 +33,6 @@ int alarms[9];
 // This array holds the digit values of the clock.
 unsigned int digitsCache[4];
 
-// Holds the time value in minutes. Default value = 720 (12:00).
-int time = 720;
-
 // Holds the value of the minute counter
 // If this variable reaches 0 it indicates that a minute has passed.
 unsigned char minuteCounter = 60;
