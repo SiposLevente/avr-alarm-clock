@@ -113,6 +113,10 @@ ISR(TIMER2_COMPA_vect)
 
         break;
 
+    case 1:
+        // Alarm settings
+        break;
+
     default:
         break;
     }
@@ -146,10 +150,18 @@ ISR(PCINT0_vect)
     btnPress ^= 0x01;
     if (btnHoldCounter >= 2)
     {
-        // Mode switch
+        if (currentMode == 1)
+        {
+            currentMode = 0;
+        }
+        else
+        {
+            currentMode++;
+        }
+        altMode = 0;
     }
     else
     {
-        // Alt mode
+        altMode ^= 0x01;
     }
 }
