@@ -28,6 +28,67 @@ int TimeToNum(int digit)
     return returnDigit;
 }
 
+int DateToNum(int digit)
+{
+    switch (digit)
+    {
+    case 0:
+        if (GetMonth() > 9)
+        {
+            return 1;
+        }
+        break;
+
+    case 1:
+        int tempMonth = GetMonth();
+        if (tempMonth > 9)
+        {
+            return tempMonth - 10;
+        }
+
+        break;
+
+    case 2:
+        return GetDay() / 10;
+        break;
+
+    case 3:
+        int tempDay = GetDay();
+        return tempDay - (tempDay / 10);
+        break;
+
+    default:
+        return -1;
+        break;
+    }
+}
+
+int YearToNum(int digit)
+{
+    switch (digit)
+    {
+    case 0:
+        // First year digit.
+        break;
+
+    case 1:
+        // Second year digit.
+        break;
+
+    case 2:
+        // Third year digit.
+        break;
+
+    case 3:
+        // Fourth year digit.
+        break;
+
+    default:
+        return -1;
+        break;
+    }
+}
+
 void LeapYearCheck()
 {
     if (year % 4 == 0)
@@ -41,4 +102,38 @@ void LeapYearCheck()
             isLeapYear = 0;
         }
     }
+
+    if (isLeapYear)
+    {
+        monthDayCount[1] = 29;
+    }
+    else
+    {
+        monthDayCount[1] = 28;
+    }
+}
+
+int GetMonth()
+{
+    int tempMonth = date;
+    int counter = 0;
+    while (counter < 12 && tempMonth > 0)
+    {
+        tempMonth -= monthDayCount[counter];
+        counter++;
+    }
+
+    return counter;
+}
+
+int GetDay()
+{
+    int tempMonth = date;
+    int counter = GetMonth();
+    for (int i = 0; i < GetMonth(); i++)
+    {
+        tempMonth -= monthDayCount[i];
+    }
+
+    return monthDayCount[counter - 1] + tempMonth;
 }

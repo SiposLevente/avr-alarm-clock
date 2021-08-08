@@ -2,13 +2,45 @@
 // The digit determines which part of the time is outputted
 // E.g.: (Time: 43200 [12:00]) -> TimeToNum(0) => output = 1
 // (Time: 43200 [12:00]) -> TimeToNum(1) => output = 2
+// Acceptable value of digit: 0-3
 int TimeToNum(int digit);
+
+// Converts "date" variable to digits.
+// Acceptable value of digit: 0-3
+// 0-1: month digit 0 and 1
+// 2-3: day digit 0 and 1
+int DateToNum(int digit);
+
+// Converts year to digits.
+// Acceptable value of digit: 0-3
+int YearToNum(int digit);
 
 // Checks if the current year is a leap year, if yes it sets the "isLeapYear" variable
 void LeapYearCheck();
 
+// Returns the current month as a number.
+int GetMonth();
+
+// Returns the current day as a number.
+int GetDay();
+
+// Caches year.
+void CacheYear();
+
+// Caches month.
+void CacheMonth();
+
+// Caches day.
+void CacheDay();
+
 // Days in each month.
-unsigned int monthDayNum[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+unsigned int monthDayCount[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+// Stores month and date digits in a numerical format.
+unsigned int dateCache[4];
+
+// Stores year as digits.
+unsigned int yearCache[4];
 
 // Indicates if the current year is a leap year.
 unsigned char isLeapYear = 0;
