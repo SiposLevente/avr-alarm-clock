@@ -73,19 +73,19 @@ int YearToNum(int digit)
     switch (digit)
     {
     case 0:
-        // First year digit.
+        return year / 1000;
         break;
 
     case 1:
-        // Second year digit.
+        return ((year / 100) - YearToNum(0) * 10);
         break;
 
     case 2:
-        // Third year digit.
+        return ((year / 10) - (YearToNum(0) * 100) - (YearToNum(1) * 10));
         break;
 
     case 3:
-        // Fourth year digit.
+        return (year - (YearToNum(0) * 1000) - (YearToNum(1) * 100) - (YearToNum(2) * 10));
         break;
 
     default:
