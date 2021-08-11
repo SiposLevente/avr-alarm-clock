@@ -36,7 +36,7 @@ void CacheDay();
 // Days in each month.
 unsigned int monthDayCount[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-// Stores month and date digits in a numerical format.
+// Stores month and date digits in a numerical format. ([0] month,[1] month,[2] day,[3] day)
 unsigned int dateCache[4];
 
 // Stores year as digits.

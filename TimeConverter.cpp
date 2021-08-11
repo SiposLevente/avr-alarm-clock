@@ -142,3 +142,27 @@ int GetDay()
 
     return monthDayCount[counter - 1] + tempMonth;
 }
+
+void CacheYear()
+{
+    for (int i = 0; i < 4; i++)
+    {
+        yearCache[i] = YearToNum(i);
+    }
+}
+
+void CacheMonth()
+{
+    for (int i = 0; i < 2; i++)
+    {
+        dateCache[i] = DateToNum(i);
+    }
+}
+
+void CacheDay()
+{
+    for (int i = 2; i < 4; i++)
+    {
+        dateCache[i] = DateToNum(i);
+    }
+}
