@@ -1,3 +1,6 @@
+// Number of modes
+#define MODECOUNT 2
+
 // Controlls the 7 segment display digits
 // If set to 0 the digit will light up
 // Uses DDRD.
@@ -30,7 +33,7 @@ unsigned char digitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 
 // The set alarms are stored here.
 int alarms[9];
 
-// This array holds the digit values of the clock.
+// This array holds the displayed values.
 unsigned int digitsCache[4];
 
 // Holds the value of the minute counter
@@ -45,6 +48,9 @@ unsigned char currentMode = 0;
 
 // Determines if the current mode is in an alternative mode.
 unsigned char altMode = 0;
+
+// Determines if the current mode is in an alternative mode.
+unsigned char editMode = 0;
 
 // 1 if mode button is pressed.
 unsigned char btnPress = 0;
@@ -62,7 +68,7 @@ void InitSetup();
 void DisplayDigit(int digitNum, unsigned char dotPoint);
 
 // Caches the currently shown digits.
-void CacheDigits(unsigned int digitsCache[]);
+void CacheDigits();
 
 // Steps every 1 second
 void TimerOneSetup();
