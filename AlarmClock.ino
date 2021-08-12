@@ -39,7 +39,7 @@ int main()
 
 void InitSetup()
 {
-    CacheDigits(digitsCache);
+    CacheDigits();
     TimerOneSetup();
     TimerTwoSetup();
     ExtInterruptSetup();
@@ -50,11 +50,30 @@ void InitSetup()
     PORTB |= 0x10;
 }
 
-void CacheDigits(unsigned int digitsCache[])
+void CacheDigits()
 {
-    for (int i = 0; i < 4; i++)
+    switch (currentMode)
     {
-        digitsCache[i] = TimeToNum(i);
+    case 0:
+        if (altMode)
+        {
+        }
+        else
+        {
+        }
+        break;
+
+    case 1:
+        if (altMode)
+        {
+        }
+        else
+        {
+        }
+        break;
+
+    default:
+        break;
     }
 }
 
@@ -85,7 +104,7 @@ ISR(TIMER1_COMPA_vect)
         }
 
         time++;
-        CacheDigits(digitsCache);
+        CacheTime();
         minuteCounter = 60;
     }
 
@@ -143,12 +162,32 @@ ISR(TIMER2_COMPA_vect)
 // Low level trigger
 ISR(INT0_vect)
 {
+    switch (currentMode)
+    {
+    case 0:
+        if (editMode)
+        {
+            // Cycle between digits.
+        }
+        else
+        {
+            altMode ^= 0x01;
+        }
+        break;
+
+    default:
+        break;
+    }
 }
 
 // Increment button interrupt
 // Low level trigger
 ISR(INT1_vect)
 {
+    if (editMode)
+    {
+        // Increment selected digit.
+    }
 }
 
 // Mode select button interrupt
@@ -156,20 +195,30 @@ ISR(INT1_vect)
 ISR(PCINT0_vect)
 {
     btnPress ^= 0x01;
-    if (btnHoldCounter >= 2)
+    if (!btnPress)
     {
-        if (currentMode == 1)
+        if (btnHoldCounter >= 2)
         {
-            currentMode = 0;
+            editMode ^= 0x01;
         }
         else
         {
-            currentMode++;
+            if (editMode)
+            {
+                editMode = 0;
+            }
+            else
+            {
+                if (currentMode == MODECOUNT - 1)
+                {
+                    currentMode = 0;
+                }
+                else
+                {
+                    currentMode++;
+                }
+                altMode = 0;
+            }
         }
-        altMode = 0;
-    }
-    else
-    {
-        altMode ^= 0x01;
     }
 }
