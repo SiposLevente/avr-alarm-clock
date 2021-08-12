@@ -24,6 +24,9 @@ int GetMonth();
 // Returns the current day as a number.
 int GetDay();
 
+// Caches time.
+void CacheTime();
+
 // Caches year.
 void CacheYear();
 
@@ -35,6 +38,9 @@ void CacheDay();
 
 // Days in each month.
 unsigned int monthDayCount[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+
+// Stores time in a numerical format.
+unsigned int timeCache[4];
 
 // Stores month and date digits in a numerical format. ([0] month,[1] month,[2] day,[3] day)
 unsigned int dateCache[4];
