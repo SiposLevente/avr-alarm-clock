@@ -186,7 +186,16 @@ ISR(INT1_vect)
 {
     if (editMode)
     {
-        // Increment selected digit.
+        if (selectedDigit < 3)
+        {
+            selectedDigit++;
+        }
+        else
+        {
+            selectedDigit = 0;
+        }
+
+        // Solve so this triggers only once.
     }
 }
 

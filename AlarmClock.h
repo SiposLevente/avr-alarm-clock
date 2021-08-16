@@ -58,8 +58,11 @@ static unsigned char btnPress = 0;
 // Counts how many seconds were the button pressed.
 static unsigned char btnHoldCounter = 0;
 
-//Stores current which digit is lit up
+// Stores current which digit is lit up
 static unsigned char currDigit = 0;
+
+// Stores which digit is selected.
+static unsigned char selectedDigit = 0;
 
 // Initial setup. Sets the pins and other basic variables to the default state.
 void InitSetup();
