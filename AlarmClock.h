@@ -33,9 +33,6 @@ static unsigned char digitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6,
 // The set alarms are stored here.
 static int alarms[9];
 
-// This array holds the displayed values.
-static unsigned int digitsCache[4];
-
 // Holds the value of the minute counter
 // If this variable reaches 0 it indicates that a minute has passed.
 static unsigned char minuteCounter = 60;

@@ -53,44 +53,43 @@ void InitSetup()
 
 void CacheDigits()
 {
+    CacheYear();
+    CacheMonth();
+    CacheDay();
+    CacheTime();
+}
+
+void DisplayDigit(int digitNum, unsigned char dotPoint = 0)
+{
     switch (currentMode)
     {
     case 0:
         if (altMode)
         {
+            // Alt time mode.
         }
         else
         {
+            PORTD &= 0x0F;
+
+            PORTD |= (1 << digitNum + DIGITSELECT_0);
+
+            if (digitNum == 1 && dotPoint)
+            {
+                SendData(digitNumbersDecimalDot[timeCache[digitNum]]);
+            }
+            else
+            {
+                SendData(digitNumbers[timeCache[digitNum]]);
+            }
         }
         break;
 
     case 1:
-        if (altMode)
-        {
-        }
-        else
-        {
-        }
         break;
 
     default:
         break;
-    }
-}
-
-void DisplayDigit(int digitNum, unsigned char dotPoint = 0)
-{
-    PORTD &= 0x0F;
-
-    PORTD |= (1 << digitNum + DIGITSELECT_0);
-
-    if (digitNum == 1 && dotPoint)
-    {
-        SendData(digitNumbersDecimalDot[digitsCache[digitNum]]);
-    }
-    else
-    {
-        SendData(digitNumbers[digitsCache[digitNum]]);
     }
 }
 
@@ -126,7 +125,6 @@ ISR(TIMER2_COMPA_vect)
     case 0:
         if (altMode == 0)
         {
-
             unsigned char dot = 0;
             if (currDigit == 1 && showDotPoint)
             {
