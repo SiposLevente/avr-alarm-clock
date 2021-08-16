@@ -37,25 +37,25 @@ void CacheMonth();
 void CacheDay();
 
 // Days in each month.
-unsigned int monthDayCount[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+static unsigned int monthDayCount[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 // Stores time in a numerical format.
-unsigned int timeCache[4];
+static unsigned int timeCache[4];
 
 // Stores month and date digits in a numerical format. ([0] month,[1] month,[2] day,[3] day)
-unsigned int dateCache[4];
+static unsigned int dateCache[4];
 
 // Stores year as digits.
-unsigned int yearCache[4];
+static unsigned int yearCache[4];
 
 // Indicates if the current year is a leap year.
-unsigned char isLeapYear = 0;
+static unsigned char isLeapYear = 0;
 
 // Holds the time value in minutes. Default value = 720 (12:00).
-int time = 720;
+static int time = 720;
 
 // Stores the year.
-int year = 2021;
+static int year = 2021;
 
 // Stores the day and the month.
-int date = 1;
+static int date = 1;

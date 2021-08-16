@@ -21,45 +21,45 @@
 
 // To display the correct number you have to start sending the digits from the last digit (which place represents the highest value)
 // 1 => 0x06 => 00000110 => (send 0 and shift) x 5, (send 1 and shift) x 2, (send 0 and shift)
-unsigned char digitNumbers[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F};
+static unsigned char digitNumbers[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F};
 
 // Stores the values of the hex representations of the used letters
 // Letters: A, L, r
-unsigned char digitLetters[3] = {0x77, 0x38, 0x50};
+static unsigned char digitLetters[3] = {0x77, 0x38, 0x50};
 
 // Numbers with a decimal dot.
-unsigned char digitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 0xFD, 0x87, 0xFF, 0xEF};
+static unsigned char digitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 0xFD, 0x87, 0xFF, 0xEF};
 
 // The set alarms are stored here.
-int alarms[9];
+static int alarms[9];
 
 // This array holds the displayed values.
-unsigned int digitsCache[4];
+static unsigned int digitsCache[4];
 
 // Holds the value of the minute counter
 // If this variable reaches 0 it indicates that a minute has passed.
-unsigned char minuteCounter = 60;
+static unsigned char minuteCounter = 60;
 
 // If true the dot point for the given digit will light up.
-unsigned char showDotPoint = 0;
+static unsigned char showDotPoint = 0;
 
 // Holds the value of the selected mode.
-unsigned char currentMode = 0;
+static unsigned char currentMode = 0;
 
 // Determines if the current mode is in an alternative mode.
-unsigned char altMode = 0;
+static unsigned char altMode = 0;
 
 // Determines if the current mode is in an alternative mode.
-unsigned char editMode = 0;
+static unsigned char editMode = 0;
 
 // 1 if mode button is pressed.
-unsigned char btnPress = 0;
+static unsigned char btnPress = 0;
 
 // Counts how many seconds were the button pressed.
-unsigned char btnHoldCounter = 0;
+static unsigned char btnHoldCounter = 0;
 
 //Stores current which digit is lit up
-unsigned char currDigit = 0;
+static unsigned char currDigit = 0;
 
 // Initial setup. Sets the pins and other basic variables to the default state.
 void InitSetup();
