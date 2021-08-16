@@ -23,6 +23,7 @@ void TimerTwoSetup()
 void ExtInterruptSetup()
 {
     EIMSK |= (1 << INT0) | (1 << INT1);
+    EICRA |= (1 << ISC10) | (1 << ISC00);
     PCICR |= (1 << PCIE0);
     PCMSK0 |= (1 << PCINT4);
 }
@@ -159,7 +160,7 @@ ISR(TIMER2_COMPA_vect)
 }
 
 // Next button interrupt
-// Low level trigger
+// Logic change trigger
 ISR(INT0_vect)
 {
     switch (currentMode)
@@ -181,7 +182,7 @@ ISR(INT0_vect)
 }
 
 // Increment button interrupt
-// Low level trigger
+// Logic change trigger
 ISR(INT1_vect)
 {
     if (editMode)
