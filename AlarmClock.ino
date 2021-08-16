@@ -159,44 +159,65 @@ ISR(TIMER2_COMPA_vect)
     }
 }
 
+// 0 if external interrupt has been triggered.
+unsigned char extIntZeroTriggered = 0;
+
 // Next button interrupt
 // Logic change trigger
 ISR(INT0_vect)
 {
-    switch (currentMode)
+    if (extIntZeroTriggered == 0)
     {
-    case 0:
-        if (editMode)
+        switch (currentMode)
         {
-            // Cycle between digits.
-        }
-        else
-        {
-            altMode ^= 0x01;
-        }
-        break;
+        case 0:
+            if (editMode)
+            {
+                // Cycle between digits.
+            }
+            else
+            {
+                altMode ^= 0x01;
+            }
+            break;
 
-    default:
-        break;
+        default:
+            break;
+        }
+    }
+    else
+    {
+        extIntZeroTriggered ^= 0x01;
     }
 }
+
+// 1 if external interrupt has been triggered.
+unsigned char extIntOneTriggered = 0;
 
 // Increment button interrupt
 // Logic change trigger
 ISR(INT1_vect)
 {
-    if (editMode)
+    if (extIntOneTriggered == 0)
     {
-        if (selectedDigit < 3)
+        if (editMode)
         {
-            selectedDigit++;
-        }
-        else
-        {
-            selectedDigit = 0;
-        }
+            if (selectedDigit < 3)
+            {
+                selectedDigit++;
+            }
+            else
+            {
+                selectedDigit = 0;
+            }
 
-        // Solve so this triggers only once.
+            // Solve so this triggers only once.
+        }
+        extIntOneTriggered ^= 0x01;
+    }
+    else
+    {
+        extIntOneTriggered ^= 0x01;
     }
 }
 
