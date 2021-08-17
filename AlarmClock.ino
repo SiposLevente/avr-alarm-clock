@@ -59,7 +59,7 @@ void CacheDigits()
     CacheTime();
 }
 
-void DisplayDigit(int digitNum, unsigned char dotPoint = 0)
+void DisplayDigit(int digitNum)
 {
     switch (currentMode)
     {
@@ -74,7 +74,7 @@ void DisplayDigit(int digitNum, unsigned char dotPoint = 0)
 
             PORTD |= (1 << digitNum + DIGITSELECT_0);
 
-            if (digitNum == 1 && dotPoint)
+            if (digitNum == 1 && showDotPoint)
             {
                 SendData(digitNumbersDecimalDot[timeCache[digitNum]]);
             }
@@ -120,32 +120,7 @@ ISR(TIMER1_COMPA_vect)
 // Timer 2 interrupt
 ISR(TIMER2_COMPA_vect)
 {
-    switch (currentMode)
-    {
-    case 0:
-        if (altMode == 0)
-        {
-            unsigned char dot = 0;
-            if (currDigit == 1 && showDotPoint)
-            {
-                dot = 1;
-            }
-            DisplayDigit(currDigit, dot);
-        }
-        else
-        {
-            // Displays year for 5 sec then month and day for 5 sec
-        }
-
-        break;
-
-    case 1:
-        // Alarm settings
-        break;
-
-    default:
-        break;
-    }
+    DisplayDigit(currDigit);
 
     if (currDigit == 3)
     {

@@ -55,7 +55,7 @@ static unsigned char btnPress = 0;
 // Counts how many seconds were the button pressed.
 static unsigned char btnHoldCounter = 0;
 
-// Stores current which digit is lit up
+// Stores which digit is lit up.
 static unsigned char currDigit = 0;
 
 // Stores which digit is selected.
