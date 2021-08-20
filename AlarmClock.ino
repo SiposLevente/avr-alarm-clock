@@ -4,7 +4,7 @@
 #include "headers/ShiftRegisterController.h"
 #include "headers/AlarmClock.h"
 
-void CacheDisplayDigits(unsigned char arrayToCache[4])
+void CacheDisplayDigits(unsigned int arrayToCache[4])
 {
     for (int i = 0; i < 4; i++)
     {
@@ -109,13 +109,27 @@ ISR(TIMER1_COMPA_vect)
         if (time >= 1440)
         {
             time = 0;
+            int prevMonth = GetMonth();
+            date++;
+            CacheDay();
+
+            if (GetMonth() != prevMonth)
+            {
+                CacheMonth();
+            }
+
+            if ((isLeapYear && date == 366) || (!isLeapYear && date == 365))
+            {
+                year++;
+                CacheYear();
+            }
         }
 
         time++;
         CacheTime();
         if (currentMode == 0)
         {
-            // CacheDisplayDigits(timeCache);
+            CacheDisplayDigits(timeCache);
         }
 
         minuteCounter = 60;
@@ -125,6 +139,18 @@ ISR(TIMER1_COMPA_vect)
     if (btnPress)
     {
         btnHoldCounter++;
+    }
+
+    if (!currentMode && altMode)
+    {
+        if (altModeCounter < 5)
+        {
+            altModeCounter++;
+        }
+        else
+        {
+            altModeCounter = 0;
+        }
     }
 
     showDotPoint ^= 0x01;
