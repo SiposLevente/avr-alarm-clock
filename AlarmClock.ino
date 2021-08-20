@@ -1,8 +1,8 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
-#include "TimeConverter.h"
-#include "ShiftRegisterController.h"
-#include "AlarmClock.h"
+#include "headers/TimeConverter.h"
+#include "headers/ShiftRegisterController.h"
+#include "headers/AlarmClock.h"
 
 void CacheDisplayDigits(unsigned char arrayToCache[4])
 {
