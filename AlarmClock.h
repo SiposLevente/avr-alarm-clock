@@ -30,6 +30,9 @@ static unsigned char digitLetters[3] = {0x77, 0x38, 0x50};
 // Numbers with a decimal dot.
 static unsigned char digitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 0xFD, 0x87, 0xFF, 0xEF};
 
+// Caches the displayed digits.
+static unsigned char displayCache[4];
+
 // The set alarms are stored here.
 static int alarms[9];
 
@@ -74,7 +77,10 @@ void InitSetup();
 void DisplayDigit(int digitNum, unsigned char dotPoint);
 
 // Caches the currently shown digits.
-void CacheDigits();
+void InitialDigitCacheing();
+
+// Caches digits to displayCache.
+void CacheDisplayDigits(unsigned char arrayToCache[4]);
 
 // Steps every 1 second
 void TimerOneSetup();

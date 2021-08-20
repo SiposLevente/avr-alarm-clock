@@ -4,6 +4,14 @@
 #include "ShiftRegisterController.h"
 #include "AlarmClock.h"
 
+void CacheDisplayDigits(unsigned char arrayToCache[4])
+{
+    for (int i = 0; i < 4; i++)
+    {
+        displayCache[i] = arrayToCache[i];
+    }
+}
+
 void TimerOneSetup()
 {
     TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10);
@@ -40,7 +48,7 @@ int main()
 
 void InitSetup()
 {
-    CacheDigits();
+    InitialDigitCacheing();
     TimerOneSetup();
     TimerTwoSetup();
     ExtInterruptSetup();
@@ -51,7 +59,7 @@ void InitSetup()
     PORTB |= 0x10;
 }
 
-void CacheDigits()
+void InitialDigitCacheing()
 {
     CacheYear();
     CacheMonth();
@@ -131,12 +139,6 @@ ISR(TIMER2_COMPA_vect)
         currDigit++;
     }
 }
-
-// 0 if external interrupt has been triggered.
-unsigned char extIntZeroTriggered = 0;
-
-// 1 if external interrupt has been triggered.
-unsigned char extIntOneTriggered = 0;
 
 // Next button interrupt
 // Logic change trigger
@@ -218,6 +220,17 @@ ISR(PCINT0_vect)
                 else
                 {
                     currentMode++;
+                    switch (currentMode)
+                    {
+                    case 0:
+                        CacheTime();
+                        CacheDay();
+                        CacheMonth();
+                        CacheYear();
+                        break;
+                    default:
+                        break;
+                    }
                 }
                 altMode = 0;
             }
