@@ -113,6 +113,11 @@ ISR(TIMER1_COMPA_vect)
 
         time++;
         CacheTime();
+        if (currentMode == 0)
+        {
+            // CacheDisplayDigits(timeCache);
+        }
+
         minuteCounter = 60;
     }
 
@@ -128,15 +133,15 @@ ISR(TIMER1_COMPA_vect)
 // Timer 2 interrupt
 ISR(TIMER2_COMPA_vect)
 {
-    DisplayDigit(currDigit);
+    DisplayDigit(currentDigit);
 
-    if (currDigit == 3)
+    if (currentDigit == 3)
     {
-        currDigit = 0;
+        currentDigit = 0;
     }
     else
     {
-        currDigit++;
+        currentDigit++;
     }
 }
 
@@ -151,7 +156,14 @@ ISR(INT0_vect)
         case 0:
             if (editMode)
             {
-                // Cycle between digits.
+                if (selectedDigit < 3)
+                {
+                    selectedDigit++;
+                }
+                else
+                {
+                    selectedDigit = 0;
+                }
             }
             else
             {
@@ -173,24 +185,16 @@ ISR(INT0_vect)
 // Logic change trigger
 ISR(INT1_vect)
 {
-    if (extIntOneTriggered == 0)
+    if (editMode)
     {
-        if (editMode)
+        if (extIntOneTriggered == 0)
         {
-            if (selectedDigit < 3)
-            {
-                selectedDigit++;
-            }
-            else
-            {
-                selectedDigit = 0;
-            }
+            extIntOneTriggered ^= 0x01;
         }
-        extIntOneTriggered ^= 0x01;
-    }
-    else
-    {
-        extIntOneTriggered ^= 0x01;
+        else
+        {
+            extIntOneTriggered ^= 0x01;
+        }
     }
 }
 
@@ -236,4 +240,5 @@ ISR(PCINT0_vect)
             }
         }
     }
+    btnHoldCounter = 0;
 }

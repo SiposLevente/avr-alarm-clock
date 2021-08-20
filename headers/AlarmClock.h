@@ -59,7 +59,10 @@ static unsigned char btnPress = 0;
 static unsigned char btnHoldCounter = 0;
 
 // Stores which digit is lit up.
-static unsigned char currDigit = 0;
+static unsigned char currentDigit = 0;
+
+// Stores the currently selected alarm.
+static unsigned char currentAlarm = 0;
 
 // Stores which digit is selected.
 static unsigned char selectedDigit = 0;
