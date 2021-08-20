@@ -31,7 +31,7 @@ static unsigned char digitLetters[3] = {0x77, 0x38, 0x50};
 static unsigned char digitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 0xFD, 0x87, 0xFF, 0xEF};
 
 // Caches the displayed digits.
-static unsigned char displayCache[4];
+static unsigned int displayCache[4];
 
 // The set alarms are stored here.
 static int alarms[9];
@@ -48,6 +48,9 @@ static unsigned char currentMode = 0;
 
 // Determines if the current mode is in an alternative mode.
 static unsigned char altMode = 0;
+
+// Counts the seconds for alt mode.
+static unsigned char altModeCounter = 0;
 
 // Determines if the current mode is in an alternative mode.
 static unsigned char editMode = 0;
@@ -83,7 +86,7 @@ void DisplayDigit(int digitNum, unsigned char dotPoint);
 void InitialDigitCacheing();
 
 // Caches digits to displayCache.
-void CacheDisplayDigits(unsigned char arrayToCache[4]);
+void CacheDisplayDigits(unsigned int arrayToCache[4]);
 
 // Steps every 1 second
 void TimerOneSetup();
