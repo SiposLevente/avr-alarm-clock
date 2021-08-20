@@ -135,6 +135,9 @@ ISR(TIMER2_COMPA_vect)
 // 0 if external interrupt has been triggered.
 unsigned char extIntZeroTriggered = 0;
 
+// 1 if external interrupt has been triggered.
+unsigned char extIntOneTriggered = 0;
+
 // Next button interrupt
 // Logic change trigger
 ISR(INT0_vect)
@@ -164,9 +167,6 @@ ISR(INT0_vect)
     }
 }
 
-// 1 if external interrupt has been triggered.
-unsigned char extIntOneTriggered = 0;
-
 // Increment button interrupt
 // Logic change trigger
 ISR(INT1_vect)
@@ -183,8 +183,6 @@ ISR(INT1_vect)
             {
                 selectedDigit = 0;
             }
-
-            // Solve so this triggers only once.
         }
         extIntOneTriggered ^= 0x01;
     }

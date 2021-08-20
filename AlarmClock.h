@@ -61,6 +61,12 @@ static unsigned char currDigit = 0;
 // Stores which digit is selected.
 static unsigned char selectedDigit = 0;
 
+// 0 if external interrupt has been triggered.
+static unsigned char extIntZeroTriggered = 0;
+
+// 1 if external interrupt has been triggered.
+static unsigned char extIntOneTriggered = 0;
+
 // Initial setup. Sets the pins and other basic variables to the default state.
 void InitSetup();
 
