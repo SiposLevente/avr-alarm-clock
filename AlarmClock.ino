@@ -127,10 +127,6 @@ ISR(TIMER1_COMPA_vect)
 
         time++;
         CacheTime();
-        if (currentMode == 0)
-        {
-            CacheDisplayDigits(timeCache);
-        }
 
         minuteCounter = 60;
     }
