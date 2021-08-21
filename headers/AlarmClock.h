@@ -1,5 +1,6 @@
 // Number of modes
 #define MODECOUNT 2
+#define YEARMONTHTOGGLETIME 5
 
 // Controlls the 7 segment display digits
 // If set to 0 the digit will light up
@@ -50,7 +51,10 @@ static unsigned char currentMode = 0;
 static unsigned char altMode = 0;
 
 // Counts the seconds for alt mode.
-static unsigned char altModeCounter = 0;
+static unsigned char altModeCounter = YEARMONTHTOGGLETIME;
+
+// Toggles the display between displaying year or month.
+static unsigned char toggleDisplay = 0;
 
 // Determines if the current mode is in an alternative mode.
 static unsigned char editMode = 0;
@@ -85,8 +89,11 @@ void DisplayDigit(int digitNum, unsigned char dotPoint);
 // Caches the currently shown digits.
 void InitialDigitCacheing();
 
-// Caches digits to displayCache.
-void CacheDisplayDigits(unsigned int arrayToCache[4]);
+// Displays the time.
+void DisplayTime(int digitNum);
+
+// Displays the time alt mode.
+void DisplayTimeAlt(int digitNum);
 
 // Steps every 1 second
 void TimerOneSetup();
