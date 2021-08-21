@@ -1,3 +1,9 @@
+struct Alarm
+{
+    int time;
+    unsigned char isEnabled;
+};
+
 // Number of modes
 #define MODECOUNT 2
 #define YEARMONTHTOGGLETIME 5
@@ -35,7 +41,7 @@ static unsigned char digitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6,
 static unsigned int displayCache[4];
 
 // The set alarms are stored here.
-static int alarms[9];
+static Alarm alarms[9];
 
 // Holds the value of the minute counter
 // If this variable reaches 0 it indicates that a minute has passed.
