@@ -4,11 +4,34 @@
 #include "headers/ShiftRegisterController.h"
 #include "headers/AlarmClock.h"
 
-void CacheDisplayDigits(unsigned int arrayToCache[4])
+void DisplayTime(int digitNum)
 {
-    for (int i = 0; i < 4; i++)
+    if (digitNum == 1 && showDotPoint)
     {
-        displayCache[i] = arrayToCache[i];
+        SendData(digitNumbersDecimalDot[timeCache[digitNum]]);
+    }
+    else
+    {
+        SendData(digitNumbers[timeCache[digitNum]]);
+    }
+}
+
+void DisplayTimeAlt(int digitNum)
+{
+    if (toggleDisplay)
+    {
+        if (digitNum == 1)
+        {
+            SendData(digitNumbersDecimalDot[dateCache[digitNum]]);
+        }
+        else
+        {
+            SendData(digitNumbers[dateCache[digitNum]]);
+        }
+    }
+    else
+    {
+        SendData(digitNumbers[yearCache[digitNum]]);
     }
 }
 
@@ -69,27 +92,19 @@ void InitialDigitCacheing()
 
 void DisplayDigit(int digitNum)
 {
+    PORTD &= 0x0F;
+
+    PORTD |= (1 << digitNum + DIGITSELECT_0);
     switch (currentMode)
     {
     case 0:
         if (altMode)
         {
-            // Alt time mode.
+            DisplayTimeAlt(digitNum);
         }
         else
         {
-            PORTD &= 0x0F;
-
-            PORTD |= (1 << digitNum + DIGITSELECT_0);
-
-            if (digitNum == 1 && showDotPoint)
-            {
-                SendData(digitNumbersDecimalDot[timeCache[digitNum]]);
-            }
-            else
-            {
-                SendData(digitNumbers[timeCache[digitNum]]);
-            }
+            DisplayTime(digitNum);
         }
         break;
 
@@ -139,13 +154,10 @@ ISR(TIMER1_COMPA_vect)
 
     if (!currentMode && altMode)
     {
-        if (altModeCounter < 5)
+        if (!altModeCounter--)
         {
-            altModeCounter++;
-        }
-        else
-        {
-            altModeCounter = 0;
+            toggleDisplay ^= 0x01;
+            altModeCounter = YEARMONTHTOGGLETIME;
         }
     }
 
