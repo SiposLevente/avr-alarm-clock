@@ -47,6 +47,90 @@ void DisplayAlarms(int digitNum)
     }
 }
 
+void Edit(int digitNum)
+{
+    switch (currentMode)
+    {
+    case 0:
+        // selectedDigit<4 -> display time.
+        // 3 < selectedDigit < 8 -> display month/day.
+        // 7 < selectedDigit -> display year.
+        if (selectedDigit < 4)
+        {
+            if (digitNum == selectedDigit && showDotPoint)
+            {
+                SendData(0x00);
+            }
+            else
+            {
+                SendData(digitNumbers[tmpTimeCache[digitNum]]);
+            }
+        }
+        else if (3 < selectedDigit && selectedDigit < 8)
+        {
+            if (digitNum == selectedDigit % 4 && showDotPoint)
+            {
+                SendData(0x00);
+            }
+            else
+            {
+                if (digitNum == 1)
+                {
+                    SendData(digitNumbersDecimalDot[tmpDateCache[digitNum]]);
+                }
+                else
+                {
+                    SendData(digitNumbers[tmpDateCache[digitNum]]);
+                }
+            }
+        }
+        else
+        {
+            if (digitNum == selectedDigit % 4 && showDotPoint)
+            {
+                SendData(0x00);
+            }
+            else
+            {
+                SendData(digitNumbers[tmpYearCache[digitNum]]);
+            }
+        }
+
+        if (incrementSelectedDigit)
+        {
+            if (selectedDigit < 4)
+            {
+                if (selectedDigit == 1 && tmpTimeCache[0] == 2)
+                {
+                    timeMaxDigits[1] = 3;
+                }
+                else
+                {
+                    timeMaxDigits[1] = 9;
+                }
+
+                if (tmpTimeCache[selectedDigit] < timeMaxDigits[selectedDigit])
+                {
+                    tmpTimeCache[selectedDigit]++;
+
+                    if (tmpTimeCache[0] == 2 && tmpTimeCache[1] > 3)
+                    {
+                        tmpTimeCache[1] = 0;
+                    }
+                }
+                else
+                {
+                    tmpTimeCache[selectedDigit] = 0;
+                }
+            }
+
+            incrementSelectedDigit = 0;
+        }
+
+        break;
+    }
+}
+
 void TimerOneSetup()
 {
     TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10);
@@ -108,25 +192,33 @@ void DisplayDigit(int digitNum)
     PORTD &= 0x0F;
 
     PORTD |= (1 << digitNum + DIGITSELECT_0);
-    switch (currentMode)
+
+    if (editMode)
     {
-    case 0:
-        if (altMode)
+        Edit(digitNum);
+    }
+    else
+    {
+        switch (currentMode)
         {
-            DisplayTimeAlt(digitNum);
-        }
-        else
-        {
-            DisplayTime(digitNum);
-        }
-        break;
+        case 0:
+            if (altMode)
+            {
+                DisplayTimeAlt(digitNum);
+            }
+            else
+            {
+                DisplayTime(digitNum);
+            }
+            break;
 
-    case 1:
-        DisplayAlarms(digitNum);
-        break;
+        case 1:
+            DisplayAlarms(digitNum);
+            break;
 
-    default:
-        break;
+        default:
+            break;
+        }
     }
 }
 
@@ -207,7 +299,7 @@ ISR(INT0_vect)
         case 0:
             if (editMode)
             {
-                if (selectedDigit < 3)
+                if (selectedDigit < 11)
                 {
                     selectedDigit++;
                 }
@@ -253,6 +345,7 @@ ISR(INT1_vect)
     {
         if (extIntOneTriggered == 0)
         {
+            incrementSelectedDigit = 1;
             extIntOneTriggered ^= 0x01;
         }
         else
@@ -271,13 +364,22 @@ ISR(PCINT0_vect)
     {
         if (btnHoldCounter >= 2)
         {
-            editMode ^= 0x01;
+            for (int i = 0; i < 4; i++)
+            {
+                tmpTimeCache[i] = timeCache[i];
+                tmpDateCache[i] = dateCache[i];
+                tmpYearCache[i] = yearCache[i];
+            }
+            editMode = 1;
         }
         else
         {
             if (editMode)
             {
                 editMode = 0;
+                time = (tmpTimeCache[0] * 600 + tmpTimeCache[1] * 60 + tmpTimeCache[2] * 10 + tmpTimeCache[3]);
+                minuteCounter = 60;
+                CacheTime();
             }
             else
             {

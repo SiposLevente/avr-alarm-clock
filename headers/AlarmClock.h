@@ -33,8 +33,8 @@ struct Alarm
 unsigned char digitNumbers[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F};
 
 // Stores the values of the hex representations of the used letters
-// Letters: A, L, r
-unsigned char digitLetters[3] = {0x77, 0x38, 0x50};
+// Letters: A, L, r, E, n
+unsigned char digitLetters[5] = {0x77, 0x38, 0x50, 0x79, 0x54};
 
 // Numbers with a decimal dot.
 unsigned char digitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 0xFD, 0x87, 0xFF, 0xEF};
@@ -88,23 +88,35 @@ unsigned char extIntZeroTriggered = 0;
 // 1 if external interrupt has been triggered.
 unsigned char extIntOneTriggered = 0;
 
+// 1 if the selected digit needs to be incremented.
+unsigned char incrementSelectedDigit = 0;
+
 // Initial setup. Sets the pins and other basic variables to the default state.
 void InitSetup();
 
 // Displays the time on a given digit.
+// digitNum = number of displayed digit.
+// dotPoint = draws a dot point if this is 1.
 void DisplayDigit(int digitNum, unsigned char dotPoint);
 
 // Caches the currently shown digits.
 void InitialDigitCacheing();
 
 // Displays the time.
+// digitNum = number of displayed digit.
 void DisplayTime(int digitNum);
 
 // Displays the time alt mode.
+// digitNum = number of displayed digit.
 void DisplayTimeAlt(int digitNum);
 
 // Displays the alarms.
+// digitNum = number of displayed digit.
 void DisplayAlarms(int digitNum);
+
+// Editing mode.
+// digitNum = number of displayed digit.
+void Edit(int digitNum);
 
 // Steps every 1 second
 void TimerOneSetup();
