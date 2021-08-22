@@ -1,5 +1,14 @@
 #include "headers/TimeConverter.h"
 
+int time = 1439;
+int year = 2021;
+int date = 365;
+unsigned char isLeapYear = 0;
+unsigned int monthDayCount[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+unsigned int timeCache[4] = {0, 0, 0, 0};
+unsigned int dateCache[4] = {0, 0, 0, 0};
+unsigned int yearCache[4] = {0, 0, 0, 0};
+
 int TimeToNum(int digit)
 {
     int returnDigit = -1;
