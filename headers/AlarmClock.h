@@ -28,63 +28,63 @@ struct Alarm
 
 // To display the correct number you have to start sending the digits from the last digit (which place represents the highest value)
 // 1 => 0x06 => 00000110 => (send 0 and shift) x 5, (send 1 and shift) x 2, (send 0 and shift)
-static unsigned char digitNumbers[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F};
+unsigned char digitNumbers[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F};
 
 // Stores the values of the hex representations of the used letters
 // Letters: A, L, r
-static unsigned char digitLetters[3] = {0x77, 0x38, 0x50};
+unsigned char digitLetters[3] = {0x77, 0x38, 0x50};
 
 // Numbers with a decimal dot.
-static unsigned char digitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 0xFD, 0x87, 0xFF, 0xEF};
+unsigned char digitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 0xFD, 0x87, 0xFF, 0xEF};
 
 // Caches the displayed digits.
-static unsigned int displayCache[4];
+unsigned int displayCache[4];
 
 // The set alarms are stored here.
-static Alarm alarms[9];
+Alarm alarms[9];
 
 // Holds the value of the minute counter
 // If this variable reaches 0 it indicates that a minute has passed.
-static unsigned char minuteCounter = 60;
+unsigned char minuteCounter = 60;
 
 // If true the dot point for the given digit will light up.
-static unsigned char showDotPoint = 0;
+unsigned char showDotPoint = 0;
 
 // Holds the value of the selected mode.
-static unsigned char currentMode = 0;
+unsigned char currentMode = 0;
 
 // Determines if the current mode is in an alternative mode.
-static unsigned char altMode = 0;
+unsigned char altMode = 0;
 
 // Counts the seconds for alt mode.
-static unsigned char altModeCounter = YEARMONTHTOGGLETIME;
+unsigned char altModeCounter = YEARMONTHTOGGLETIME;
 
 // Toggles the display between displaying year or month.
-static unsigned char toggleDisplay = 0;
+unsigned char toggleDisplay = 0;
 
 // Determines if the current mode is in an alternative mode.
-static unsigned char editMode = 0;
+unsigned char editMode = 0;
 
 // 1 if mode button is pressed.
-static unsigned char btnPress = 0;
+unsigned char btnPress = 0;
 
 // Counts how many seconds were the button pressed.
-static unsigned char btnHoldCounter = 0;
+unsigned char btnHoldCounter = 0;
 
 // Stores which digit is lit up.
-static unsigned char currentDigit = 0;
+unsigned char currentDigit = 0;
 
 // Stores the currently selected alarm.
-static unsigned char currentAlarm = 0;
+unsigned char currentAlarm = 0;
 
 // Stores which digit is selected.
-static unsigned char selectedDigit = 0;
+unsigned char selectedDigit = 0;
 
 // 0 if external interrupt has been triggered.
-static unsigned char extIntZeroTriggered = 0;
+unsigned char extIntZeroTriggered = 0;
 
 // 1 if external interrupt has been triggered.
-static unsigned char extIntOneTriggered = 0;
+unsigned char extIntOneTriggered = 0;
 
 // Initial setup. Sets the pins and other basic variables to the default state.
 void InitSetup();
