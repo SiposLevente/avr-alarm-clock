@@ -1,8 +1,8 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
+#include "headers/AlarmClock.h"
 #include "headers/TimeConverter.h"
 #include "headers/ShiftRegisterController.h"
-#include "headers/AlarmClock.h"
 
 void DisplayTime(int digitNum)
 {
@@ -39,7 +39,7 @@ void TimerOneSetup()
 {
     TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10);
     OCR1A = 15625;
-    //OCR1A = 5;
+    //OCR1A = 3900;
     TIMSK1 = (1 << OCIE1A);
 }
 
@@ -85,6 +85,7 @@ void InitSetup()
 void InitialDigitCacheing()
 {
     CacheYear();
+    LeapYearCheck();
     CacheMonth();
     CacheDay();
     CacheTime();
@@ -121,28 +122,31 @@ ISR(TIMER1_COMPA_vect)
 {
     if (!minuteCounter--)
     {
+        time++;
+
         if (time >= 1440)
         {
             time = 0;
             int prevMonth = GetMonth();
             date++;
-            CacheDay();
+            if ((isLeapYear && date == 367) || (!isLeapYear && date == 366))
+            {
+                date = 1;
+                year++;
+                CacheYear();
+                CacheMonth();
+                LeapYearCheck();
+            }
 
             if (GetMonth() != prevMonth)
             {
                 CacheMonth();
             }
 
-            if ((isLeapYear && date == 366) || (!isLeapYear && date == 365))
-            {
-                year++;
-                CacheYear();
-            }
+            CacheDay();
         }
 
-        time++;
         CacheTime();
-
         minuteCounter = 60;
     }
 
@@ -202,6 +206,7 @@ ISR(INT0_vect)
             else
             {
                 altMode ^= 0x01;
+                extIntZeroTriggered ^= 0x01;
             }
             break;
 

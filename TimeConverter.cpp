@@ -1,8 +1,8 @@
 #include "headers/TimeConverter.h"
 
-int time = 1439;
+int time = 7200;
 int year = 2021;
-int date = 365;
+int date = 1;
 unsigned char isLeapYear = 0;
 unsigned int monthDayCount[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 unsigned int timeCache[4] = {0, 0, 0, 0};
