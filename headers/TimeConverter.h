@@ -59,3 +59,15 @@ extern int year;
 
 // Stores the day and the month.
 extern int date;
+
+// Cache for setting time.
+extern unsigned int tmpTimeCache[4];
+
+// Cache for setting date.
+extern unsigned int tmpDateCache[4];
+
+// Cache for setting year.
+extern unsigned int tmpYearCache[4];
+
+// Stores the largest number which can be at a time digit.
+extern unsigned char timeMaxDigits[4];

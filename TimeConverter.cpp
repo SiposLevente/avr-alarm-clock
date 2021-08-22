@@ -8,6 +8,10 @@ unsigned int monthDayCount[12] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31
 unsigned int timeCache[4] = {0, 0, 0, 0};
 unsigned int dateCache[4] = {0, 0, 0, 0};
 unsigned int yearCache[4] = {0, 0, 0, 0};
+unsigned int tmpTimeCache[4] = {0, 0, 0, 0};
+unsigned int tmpDateCache[4] = {0, 0, 0, 0};
+unsigned int tmpYearCache[4] = {0, 0, 0, 0};
+unsigned char timeMaxDigits[4] = {2, 9, 5, 9};
 
 int TimeToNum(int digit)
 {
