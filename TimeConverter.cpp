@@ -1,6 +1,6 @@
 #include "headers/TimeConverter.h"
 
-int time = 7200;
+int time = 720;
 int year = 2021;
 int date = 1;
 unsigned char isLeapYear = 0;
