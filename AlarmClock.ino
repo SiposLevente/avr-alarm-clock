@@ -35,6 +35,18 @@ void DisplayTimeAlt(int digitNum)
     }
 }
 
+void DisplayAlarms(int digitNum)
+{
+    if (digitNum == 3)
+    {
+        SendData(digitNumbers[currentAlarm]);
+    }
+    else
+    {
+        SendData(digitLetters[digitNum]);
+    }
+}
+
 void TimerOneSetup()
 {
     TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10);
@@ -110,6 +122,7 @@ void DisplayDigit(int digitNum)
         break;
 
     case 1:
+        DisplayAlarms(digitNum);
         break;
 
     default:
@@ -206,13 +219,25 @@ ISR(INT0_vect)
             else
             {
                 altMode ^= 0x01;
-                extIntZeroTriggered ^= 0x01;
             }
+            break;
+
+        case 1:
+            if (currentAlarm < ALARMCOUNT)
+            {
+                currentAlarm++;
+            }
+            else
+            {
+                currentAlarm = 0;
+            }
+
             break;
 
         default:
             break;
         }
+        extIntZeroTriggered ^= 0x01;
     }
     else
     {

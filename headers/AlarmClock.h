@@ -6,6 +6,8 @@ struct Alarm
 
 // Number of modes
 #define MODECOUNT 2
+// MUST be between 1 - 9
+#define ALARMCOUNT 9
 #define YEARMONTHTOGGLETIME 5
 
 // Controlls the 7 segment display digits
@@ -41,7 +43,7 @@ unsigned char digitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 
 unsigned int displayCache[4];
 
 // The set alarms are stored here.
-Alarm alarms[9];
+Alarm alarms[ALARMCOUNT];
 
 // Holds the value of the minute counter
 // If this variable reaches 0 it indicates that a minute has passed.
@@ -100,6 +102,9 @@ void DisplayTime(int digitNum);
 
 // Displays the time alt mode.
 void DisplayTimeAlt(int digitNum);
+
+// Displays the alarms.
+void DisplayAlarms(int digitNum);
 
 // Steps every 1 second
 void TimerOneSetup();
