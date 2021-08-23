@@ -377,8 +377,19 @@ ISR(PCINT0_vect)
             if (editMode)
             {
                 editMode = 0;
-                time = (tmpTimeCache[0] * 600 + tmpTimeCache[1] * 60 + tmpTimeCache[2] * 10 + tmpTimeCache[3]);
+                year = tmpYearCache[0] * 1000 + tmpYearCache[1] * 100 + tmpYearCache[2] * 10 + tmpYearCache[0];
+                LeapYearCheck();
+                int tmpMonth = tmpDateCache[0] * 10 + tmpDateCache[0];
+                for (int i = 0; i < tmpMonth; i++)
+                {
+                    date += monthDayCount[i];
+                }
+                date += tmpDateCache[2] * 10 + tmpDateCache[3];
+                time = tmpTimeCache[0] * 600 + tmpTimeCache[1] * 60 + tmpTimeCache[2] * 10 + tmpTimeCache[3];
                 minuteCounter = 60;
+                CacheYear();
+                CacheMonth();
+                CacheDay();
                 CacheTime();
             }
             else
