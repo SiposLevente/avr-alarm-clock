@@ -123,6 +123,43 @@ void Edit(int digitNum)
                     tmpTimeCache[selectedDigit] = 0;
                 }
             }
+            else if (3 < selectedDigit && selectedDigit < 8)
+            {
+                int tmpSelectedDigit = selectedDigit % 4;
+                int currentMonth = GetMonth();
+                switch (tmpSelectedDigit)
+                {
+                case 0:
+                    if (tmpDateCache[0] < 1)
+                    {
+                        tmpDateCache[0]++;
+                    }
+                    else
+                    {
+                        tmpDateCache[0] = 0;
+                    }
+                    break;
+
+                case 1:
+                    if ((tmpDateCache[0] == 1 && tmpDateCache[1] == 2) || tmpDateCache[1] < 9)
+                    {
+                        tmpDateCache[1] == 0;
+                    }
+                    else
+                    {
+                        tmpDateCache[1]++;
+                    }
+                    break;
+
+                case 2:
+                    // Day settings
+                    break;
+
+                case 3:
+                    // Day settings
+                    break;
+                }
+            }
 
             incrementSelectedDigit = 0;
         }
