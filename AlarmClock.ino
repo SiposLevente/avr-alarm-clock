@@ -125,9 +125,8 @@ void Edit(int digitNum)
             }
             else if (3 < selectedDigit && selectedDigit < 8)
             {
-                int tmpSelectedDigit = selectedDigit % 4;
-                int currentMonth = GetMonth();
-                switch (tmpSelectedDigit)
+                int tmpDateDigit = tmpDateCache[0] * 10 + tmpDateCache[1];
+                switch (selectedDigit % 4)
                 {
                 case 0:
                     if (tmpDateCache[0] < 1)
@@ -141,28 +140,48 @@ void Edit(int digitNum)
                     break;
 
                 case 1:
-                    if ((tmpDateCache[0] == 1 && tmpDateCache[1] == 2) || tmpDateCache[1] < 9)
+                    if (tmpDateCache[1] < 9)
                     {
-                        tmpDateCache[1] == 0;
+                        tmpDateCache[1]++;
                     }
                     else
                     {
-                        tmpDateCache[1]++;
+                        tmpDateCache[1] = 0;
                     }
                     break;
 
                 case 2:
-                    // Day settings
+                    if (tmpDateCache[2] < monthDayCount[tmpDateDigit - 1] / 10)
+                    {
+                        tmpDateCache[2]++;
+                    }
+                    else
+                    {
+                        tmpDateCache[2] = 0;
+                    }
                     break;
 
                 case 3:
-                    // Day settings
+                    //Leap year!
                     break;
                 }
             }
-
             incrementSelectedDigit = 0;
         }
+
+        if (tmpDateCache[0] == 1 && tmpDateCache[1] > 2)
+        {
+            tmpDateCache[1] = 0;
+        }
+        if (tmpDateCache[0] == 0 && tmpDateCache[1] == 0)
+        {
+            tmpDateCache[1] = 1;
+        }
+        if (tmpDateCache[1] == 2 && tmpDateCache[2] == 3)
+        {
+            tmpDateCache[2] = 0;
+        }
+        
 
         break;
     }
