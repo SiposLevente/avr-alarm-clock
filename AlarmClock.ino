@@ -52,6 +52,8 @@ void Edit(int digitNum)
     switch (currentMode)
     {
     case 0:
+        unsigned char tmpIsLeapYear = LeapYearChecker(tmpYearCache[0] * 1000 + tmpYearCache[1] * 100 + tmpYearCache[2] * 10 + tmpYearCache[3]);
+
         // selectedDigit<4 -> display time.
         // 3 < selectedDigit < 8 -> display month/day.
         // 7 < selectedDigit -> display year.
@@ -162,8 +164,39 @@ void Edit(int digitNum)
                     break;
 
                 case 3:
-                    //Leap year!
-                    break;
+                {
+                    unsigned char tmpLastDigitOfDay = 9;
+
+                    if (tmpDateCache[2] == monthDayCount[tmpDateDigit - 1] / 10)
+                    {
+                        tmpLastDigitOfDay = tmpDateDigit - tmpDateDigit / 10 * 10;
+                        if (tmpIsLeapYear && tmpDateDigit == 2)
+                        {
+                            tmpLastDigitOfDay++;
+                        }
+                    }
+
+                    if (tmpDateCache[3] < tmpLastDigitOfDay)
+                    {
+                        tmpDateCache[3]++;
+                    }
+                    else
+                    {
+                        tmpDateCache[3] = 0;
+                    }
+                }
+                break;
+                }
+            }
+            else
+            {
+                if (tmpYearCache[selectedDigit] < 9)
+                {
+                    tmpYearCache[selectedDigit]++;
+                }
+                else
+                {
+                    tmpYearCache[selectedDigit] = 0;
                 }
             }
             incrementSelectedDigit = 0;
@@ -181,7 +214,8 @@ void Edit(int digitNum)
         {
             tmpDateCache[2] = 0;
         }
-        
+
+        // Out of range check for last day digit.
 
         break;
     }
