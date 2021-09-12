@@ -113,12 +113,19 @@ void LeapYearCheck()
     {
         if (year % 100 != 0)
         {
-            isLeapYear = 1;
+            if (year % 400 == 0)
+            {
+                isLeapYear = 1;
+            }
+            else
+            {
+                isLeapYear = 0;
+            }
         }
-        if (year % 400 == 0)
-        {
-            isLeapYear = 0;
-        }
+    }
+    else
+    {
+        isLeapYear = 0;
     }
 
     if (isLeapYear)
@@ -129,6 +136,26 @@ void LeapYearCheck()
     {
         monthDayCount[1] = 28;
     }
+}
+
+unsigned char LeapYearChecker(int year)
+{
+    if (year % 4 == 0)
+    {
+        if (year % 100 != 0)
+        {
+            if (year % 400 == 0)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    }
+
+    return 0;
 }
 
 int GetMonth()

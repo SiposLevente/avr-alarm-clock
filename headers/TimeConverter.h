@@ -18,6 +18,9 @@ int YearToNum(int digit);
 // Checks if the current year is a leap year, if yes it sets the "isLeapYear" variable
 void LeapYearCheck();
 
+// Returns 1 if the input year is a leapyear.
+unsigned char LeapYearChecker(int year);
+
 // Returns the current month as a number.
 int GetMonth();
 
