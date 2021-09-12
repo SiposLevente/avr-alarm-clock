@@ -215,16 +215,19 @@ void Edit(int digitNum)
             tmpDateCache[2] = 0;
         }
 
-        // Out of range check for last day digit.
+        // Out of range check for last day digit.                                                           NEEDS TO BE DONE!!!
+        break;
 
+    case 1:
+        // Editing alarm.
         break;
     }
 }
 
 void TimerOneSetup()
 {
-    TCCR1B = (1 << WGM12) | (1 << CS12) | (1 << CS10);
-    OCR1A = 15625;
+    TCCR1B = (1 << WGM12) | (1 << CS12);
+    OCR1A = 31250;
     //OCR1A = 3900;
     TIMSK1 = (1 << OCIE1A);
 }
@@ -315,51 +318,53 @@ void DisplayDigit(int digitNum)
 // Timer 1 interrupt
 ISR(TIMER1_COMPA_vect)
 {
-    if (!minuteCounter--)
+    if (!showDotPoint)
     {
-        time++;
-
-        if (time >= 1440)
+        if (!minuteCounter--)
         {
-            time = 0;
-            int prevMonth = GetMonth();
-            date++;
-            if ((isLeapYear && date == 367) || (!isLeapYear && date == 366))
+            time++;
+
+            if (time >= 1440)
             {
-                date = 1;
-                year++;
-                CacheYear();
-                CacheMonth();
-                LeapYearCheck();
+                time = 0;
+                int prevMonth = GetMonth();
+                date++;
+                if ((isLeapYear && date == 367) || (!isLeapYear && date == 366))
+                {
+                    date = 1;
+                    year++;
+                    CacheYear();
+                    CacheMonth();
+                    LeapYearCheck();
+                }
+
+                if (GetMonth() != prevMonth)
+                {
+                    CacheMonth();
+                }
+
+                CacheDay();
             }
 
-            if (GetMonth() != prevMonth)
-            {
-                CacheMonth();
-            }
-
-            CacheDay();
+            CacheTime();
+            minuteCounter = 60;
         }
 
-        CacheTime();
-        minuteCounter = 60;
-    }
-
-    // If the mode button is pressed the hold counter counts.
-    if (btnPress)
-    {
-        btnHoldCounter++;
-    }
-
-    if (!currentMode && altMode)
-    {
-        if (!altModeCounter--)
+        // If the mode button is pressed the hold counter counts.
+        if (btnPress)
         {
-            toggleDisplay ^= 0x01;
-            altModeCounter = YEARMONTHTOGGLETIME;
+            btnHoldCounter++;
+        }
+
+        if (!currentMode && altMode)
+        {
+            if (!altModeCounter--)
+            {
+                toggleDisplay ^= 0x01;
+                altModeCounter = YEARMONTHTOGGLETIME;
+            }
         }
     }
-
     showDotPoint ^= 0x01;
 }
 
