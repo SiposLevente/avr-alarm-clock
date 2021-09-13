@@ -214,8 +214,30 @@ void Edit(int digitNum)
         {
             tmpDateCache[2] = 0;
         }
+        // if (tmpDateCache[2] == 2)
+        // {
+        //     if (tmpIsLeapYear && tmpDateCache[3] > 9)
+        //     {
+        //         tmpDateCache[3] = 0;
+        //     }
+        //     else if (tmpDateCache[3] > 8)
+        //     {
+        //         tmpDateCache[3] = 0;
+        //     }
+        // }
+        if (tmpDateCache[3] == 2 || tmpDateCache[3] == 3)
+        {
+            unsigned char tmpDateDayCount = monthDayCount[tmpDateCache[0] * 10 + tmpDateCache[1] - 1];
+            if (tmpIsLeapYear)
+            {
+                tmpDateDayCount++;
+            }
 
-        // Out of range check for last day digit.                                                           NEEDS TO BE DONE!!!
+            if (tmpDateCache[3] > tmpDateDayCount - tmpDateDayCount / 10 * 10)
+            {
+                tmpDateCache[3] = 0;
+            }
+        }
         break;
 
     case 1:
