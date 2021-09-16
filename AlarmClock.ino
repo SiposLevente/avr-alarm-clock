@@ -229,9 +229,9 @@ void Edit(int digitNum)
         }
         break;
 
-    case 1:
-        // Editing alarm.
-        break;
+    // case 1:
+    //     // Editing alarm.
+    //     break;
     }
 }
 
