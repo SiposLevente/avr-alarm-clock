@@ -92,7 +92,10 @@ unsigned char extIntOneTriggered = 0;
 unsigned char incrementSelectedDigit = 0;
 
 // 9,8 ms between every input read
-unsigned char inputTimer = 0;
+unsigned char inputTimer = 1;
+
+// Enables input
+unsigned char inputEnable = 0;
 
 // Initial setup. Sets the pins and other basic variables to the default state.
 void InitSetup();

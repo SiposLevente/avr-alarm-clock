@@ -165,38 +165,21 @@ void Edit(int digitNum)
 
                 case 3:
                 {
-                    unsigned char tmpLastDigitOfDay = 9;
-
-                    if (tmpDateCache[2] == monthDayCount[tmpDateDigit - 1] / 10)
-                    {
-                        tmpLastDigitOfDay = tmpDateDigit - tmpDateDigit / 10 * 10;
-                        if (tmpIsLeapYear && tmpDateDigit == 2)
-                        {
-                            tmpLastDigitOfDay++;
-                        }
-                    }
-
-                    if (tmpDateCache[3] < tmpLastDigitOfDay)
-                    {
-                        tmpDateCache[3]++;
-                    }
-                    else
-                    {
-                        tmpDateCache[3] = 0;
-                    }
+                    tmpDateCache[3]++;
                 }
                 break;
                 }
             }
             else
             {
-                if (tmpYearCache[selectedDigit] < 9)
+                unsigned char tmpSelectedDigit = selectedDigit % 4;
+                if (tmpYearCache[tmpSelectedDigit] < 9)
                 {
-                    tmpYearCache[selectedDigit]++;
+                    tmpYearCache[tmpSelectedDigit]++;
                 }
                 else
                 {
-                    tmpYearCache[selectedDigit] = 0;
+                    tmpYearCache[tmpSelectedDigit] = 0;
                 }
             }
             incrementSelectedDigit = 0;
@@ -210,11 +193,16 @@ void Edit(int digitNum)
         {
             tmpDateCache[1] = 1;
         }
-        if (tmpDateCache[1] == 2 && tmpDateCache[2] == 3)
+        if (tmpDateCache[2] == 0 && tmpDateCache[3] == 0)
+        {
+            tmpDateCache[3] = 1;
+        }
+        if ((tmpDateCache[1] == 2 && tmpDateCache[2] == 3) && tmpDateCache[0] != 1)
         {
             tmpDateCache[2] = 0;
         }
-        if (tmpDateCache[3] == 2 || tmpDateCache[3] == 3)
+
+        if (tmpDateCache[2] == 2 || tmpDateCache[2] == 3)
         {
             unsigned char tmpDateDayCount = monthDayCount[tmpDateCache[0] * 10 + tmpDateCache[1] - 1];
             if (tmpIsLeapYear)
@@ -392,15 +380,19 @@ ISR(TIMER2_COMPA_vect)
     {
         currentDigit++;
     }
+    inputTimer ^= 1;
 
-    inputTimer ^= 0x01;
+    if (inputTimer)
+    {
+        inputEnable++;
+    }
 }
 
 // Next button interrupt
 // Logic change trigger
 ISR(INT0_vect)
 {
-    if (inputTimer)
+    if (inputEnable >= 4)
     {
 
         if (extIntZeroTriggered == 0)
@@ -446,6 +438,7 @@ ISR(INT0_vect)
         {
             extIntZeroTriggered ^= 0x01;
         }
+        inputEnable = 0;
     }
 }
 
@@ -453,7 +446,7 @@ ISR(INT0_vect)
 // Logic change trigger
 ISR(INT1_vect)
 {
-    if (inputTimer)
+    if (inputEnable >= 4)
     {
         if (editMode)
         {
@@ -467,6 +460,7 @@ ISR(INT1_vect)
                 extIntOneTriggered ^= 0x01;
             }
         }
+        inputEnable = 0;
     }
 }
 
@@ -474,7 +468,7 @@ ISR(INT1_vect)
 // Logic change trigger
 ISR(PCINT0_vect)
 {
-    if (inputTimer)
+    if (inputEnable >= 4)
     {
         btnPress ^= 0x01;
         if (!btnPress)
@@ -535,5 +529,6 @@ ISR(PCINT0_vect)
             }
         }
         btnHoldCounter = 0;
+        inputEnable = 0;
     }
 }
