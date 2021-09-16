@@ -91,6 +91,9 @@ unsigned char extIntOneTriggered = 0;
 // 1 if the selected digit needs to be incremented.
 unsigned char incrementSelectedDigit = 0;
 
+// 9,8 ms between every input read
+unsigned char inputTimer = 0;
+
 // Initial setup. Sets the pins and other basic variables to the default state.
 void InitSetup();
 

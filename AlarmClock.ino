@@ -229,9 +229,9 @@ void Edit(int digitNum)
         }
         break;
 
-    // case 1:
-    //     // Editing alarm.
-    //     break;
+        // case 1:
+        //     // Editing alarm.
+        //     break;
     }
 }
 
@@ -392,54 +392,60 @@ ISR(TIMER2_COMPA_vect)
     {
         currentDigit++;
     }
+
+    inputTimer ^= 0x01;
 }
 
 // Next button interrupt
 // Logic change trigger
 ISR(INT0_vect)
 {
-    if (extIntZeroTriggered == 0)
+    if (inputTimer)
     {
-        switch (currentMode)
+
+        if (extIntZeroTriggered == 0)
         {
-        case 0:
-            if (editMode)
+            switch (currentMode)
             {
-                if (selectedDigit < 11)
+            case 0:
+                if (editMode)
                 {
-                    selectedDigit++;
+                    if (selectedDigit < 11)
+                    {
+                        selectedDigit++;
+                    }
+                    else
+                    {
+                        selectedDigit = 0;
+                    }
                 }
                 else
                 {
-                    selectedDigit = 0;
+                    altMode ^= 0x01;
                 }
-            }
-            else
-            {
-                altMode ^= 0x01;
-            }
-            break;
+                break;
 
-        case 1:
-            if (currentAlarm < ALARMCOUNT)
-            {
-                currentAlarm++;
-            }
-            else
-            {
-                currentAlarm = 0;
-            }
+            case 1:
+                if (currentAlarm < ALARMCOUNT)
+                {
+                    currentAlarm++;
+                }
+                else
+                {
+                    currentAlarm = 0;
+                }
 
-            break;
+                break;
 
-        default:
-            break;
+            default:
+                break;
+            }
+            extIntZeroTriggered ^= 0x01;
         }
-        extIntZeroTriggered ^= 0x01;
-    }
-    else
-    {
-        extIntZeroTriggered ^= 0x01;
+        else
+        {
+            extIntZeroTriggered ^= 0x01;
+        }
     }
 }
 
@@ -447,16 +453,19 @@ ISR(INT0_vect)
 // Logic change trigger
 ISR(INT1_vect)
 {
-    if (editMode)
+    if (inputTimer)
     {
-        if (extIntOneTriggered == 0)
+        if (editMode)
         {
-            incrementSelectedDigit = 1;
-            extIntOneTriggered ^= 0x01;
-        }
-        else
-        {
-            extIntOneTriggered ^= 0x01;
+            if (extIntOneTriggered == 0)
+            {
+                incrementSelectedDigit = 1;
+                extIntOneTriggered ^= 0x01;
+            }
+            else
+            {
+                extIntOneTriggered ^= 0x01;
+            }
         }
     }
 }
@@ -465,63 +474,66 @@ ISR(INT1_vect)
 // Logic change trigger
 ISR(PCINT0_vect)
 {
-    btnPress ^= 0x01;
-    if (!btnPress)
+    if (inputTimer)
     {
-        if (btnHoldCounter >= 2)
+        btnPress ^= 0x01;
+        if (!btnPress)
         {
-            for (int i = 0; i < 4; i++)
+            if (btnHoldCounter >= 2)
             {
-                tmpTimeCache[i] = timeCache[i];
-                tmpDateCache[i] = dateCache[i];
-                tmpYearCache[i] = yearCache[i];
-            }
-            editMode = 1;
-        }
-        else
-        {
-            if (editMode)
-            {
-                editMode = 0;
-                year = tmpYearCache[0] * 1000 + tmpYearCache[1] * 100 + tmpYearCache[2] * 10 + tmpYearCache[0];
-                LeapYearCheck();
-                int tmpMonth = tmpDateCache[0] * 10 + tmpDateCache[0];
-                for (int i = 0; i < tmpMonth; i++)
+                for (int i = 0; i < 4; i++)
                 {
-                    date += monthDayCount[i];
+                    tmpTimeCache[i] = timeCache[i];
+                    tmpDateCache[i] = dateCache[i];
+                    tmpYearCache[i] = yearCache[i];
                 }
-                date += tmpDateCache[2] * 10 + tmpDateCache[3];
-                time = tmpTimeCache[0] * 600 + tmpTimeCache[1] * 60 + tmpTimeCache[2] * 10 + tmpTimeCache[3];
-                minuteCounter = 60;
-                CacheYear();
-                CacheMonth();
-                CacheDay();
-                CacheTime();
+                editMode = 1;
             }
             else
             {
-                if (currentMode == MODECOUNT - 1)
+                if (editMode)
                 {
-                    currentMode = 0;
+                    editMode = 0;
+                    year = tmpYearCache[0] * 1000 + tmpYearCache[1] * 100 + tmpYearCache[2] * 10 + tmpYearCache[0];
+                    LeapYearCheck();
+                    int tmpMonth = tmpDateCache[0] * 10 + tmpDateCache[0];
+                    for (int i = 0; i < tmpMonth; i++)
+                    {
+                        date += monthDayCount[i];
+                    }
+                    date += tmpDateCache[2] * 10 + tmpDateCache[3];
+                    time = tmpTimeCache[0] * 600 + tmpTimeCache[1] * 60 + tmpTimeCache[2] * 10 + tmpTimeCache[3];
+                    minuteCounter = 60;
+                    CacheYear();
+                    CacheMonth();
+                    CacheDay();
+                    CacheTime();
                 }
                 else
                 {
-                    currentMode++;
-                    switch (currentMode)
+                    if (currentMode == MODECOUNT - 1)
                     {
-                    case 0:
-                        CacheTime();
-                        CacheDay();
-                        CacheMonth();
-                        CacheYear();
-                        break;
-                    default:
-                        break;
+                        currentMode = 0;
                     }
+                    else
+                    {
+                        currentMode++;
+                        switch (currentMode)
+                        {
+                        case 0:
+                            CacheTime();
+                            CacheDay();
+                            CacheMonth();
+                            CacheYear();
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                    altMode = 0;
                 }
-                altMode = 0;
             }
         }
+        btnHoldCounter = 0;
     }
-    btnHoldCounter = 0;
 }
