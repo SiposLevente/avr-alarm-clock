@@ -380,8 +380,8 @@ ISR(TIMER2_COMPA_vect)
     {
         currentDigit++;
     }
-    inputTimer ^= 1;
 
+    inputTimer ^= 1;
     if (inputTimer)
     {
         inputEnable++;
@@ -394,7 +394,6 @@ ISR(INT0_vect)
 {
     if (inputEnable >= 4)
     {
-
         if (extIntZeroTriggered == 0)
         {
             switch (currentMode)
@@ -426,11 +425,8 @@ ISR(INT0_vect)
                 {
                     currentAlarm = 0;
                 }
-
                 break;
 
-            default:
-                break;
             }
             extIntZeroTriggered ^= 0x01;
         }
@@ -450,7 +446,7 @@ ISR(INT1_vect)
     {
         if (editMode)
         {
-            if (extIntOneTriggered == 0)
+            if (!extIntOneTriggered)
             {
                 incrementSelectedDigit = 1;
                 extIntOneTriggered ^= 0x01;
@@ -473,7 +469,7 @@ ISR(PCINT0_vect)
         btnPress ^= 0x01;
         if (!btnPress)
         {
-            if (btnHoldCounter >= 2)
+            if (btnHoldCounter >= 2 && !editMode)
             {
                 for (int i = 0; i < 4; i++)
                 {
@@ -488,6 +484,7 @@ ISR(PCINT0_vect)
                 if (editMode)
                 {
                     editMode = 0;
+                    selectedDigit = 0;
                     year = tmpYearCache[0] * 1000 + tmpYearCache[1] * 100 + tmpYearCache[2] * 10 + tmpYearCache[0];
                     LeapYearCheck();
                     int tmpMonth = tmpDateCache[0] * 10 + tmpDateCache[0];
@@ -519,8 +516,6 @@ ISR(PCINT0_vect)
                             CacheDay();
                             CacheMonth();
                             CacheYear();
-                            break;
-                        default:
                             break;
                         }
                     }
