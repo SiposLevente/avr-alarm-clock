@@ -1,13 +1,5 @@
-struct Alarm
-{
-    int time;
-    unsigned char isEnabled;
-};
-
 // Number of modes
 #define MODECOUNT 2
-// MUST be between 1 - 9
-#define ALARMCOUNT 9
 #define YEARMONTHTOGGLETIME 5
 
 // Controlls the 7 segment display digits
@@ -32,18 +24,11 @@ struct Alarm
 // 1 => 0x06 => 00000110 => (send 0 and shift) x 5, (send 1 and shift) x 2, (send 0 and shift)
 unsigned char digitNumbers[10] = {0x3F, 0x06, 0x5B, 0x4F, 0x66, 0x6D, 0x7D, 0x07, 0x7F, 0x6F};
 
-// Stores the values of the hex representations of the used letters
-// Letters: A, L, r, E, n
-unsigned char digitLetters[5] = {0x77, 0x38, 0x50, 0x79, 0x54};
-
 // Numbers with a decimal dot.
 unsigned char digitNumbersDecimalDot[10] = {0xBF, 0x86, 0xDB, 0xCF, 0xE6, 0xED, 0xFD, 0x87, 0xFF, 0xEF};
 
 // Caches the displayed digits.
 unsigned int displayCache[4];
-
-// The set alarms are stored here.
-Alarm alarms[ALARMCOUNT];
 
 // Holds the value of the minute counter
 // If this variable reaches 0 it indicates that a minute has passed.
@@ -75,9 +60,6 @@ unsigned char btnHoldCounter = 0;
 
 // Stores which digit is lit up.
 unsigned char currentDigit = 0;
-
-// Stores the currently selected alarm.
-unsigned char currentAlarm = 0;
 
 // Stores which digit is selected.
 unsigned char selectedDigit = 0;
@@ -115,10 +97,6 @@ void DisplayTime(int digitNum);
 // Displays the time alt mode.
 // digitNum = number of displayed digit.
 void DisplayTimeAlt(int digitNum);
-
-// Displays the alarms.
-// digitNum = number of displayed digit.
-void DisplayAlarms(int digitNum);
 
 // Editing mode.
 // digitNum = number of displayed digit.

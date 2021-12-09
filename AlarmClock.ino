@@ -1,6 +1,7 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
 #include "headers/AlarmClock.h"
+#include "headers/Alarm.h"
 #include "headers/TimeConverter.h"
 #include "headers/ShiftRegisterController.h"
 
@@ -32,18 +33,6 @@ void DisplayTimeAlt(int digitNum)
     else
     {
         SendData(digitNumbers[yearCache[digitNum]]);
-    }
-}
-
-void DisplayAlarms(int digitNum)
-{
-    if (digitNum == 3)
-    {
-        SendData(digitNumbers[currentAlarm]);
-    }
-    else
-    {
-        SendData(digitLetters[digitNum]);
     }
 }
 
@@ -217,9 +206,10 @@ void Edit(int digitNum)
         }
         break;
 
-        // case 1:
-        //     // Editing alarm.
-        //     break;
+    // case 1:
+    //     Alarm tmpCurrAlarm = alarms[currentAlarm];
+
+    //     break;
     }
 }
 
@@ -227,7 +217,7 @@ void TimerOneSetup()
 {
     TCCR1B = (1 << WGM12) | (1 << CS12);
     OCR1A = 31250;
-    //OCR1A = 3900;
+    // OCR1A = 3900;
     TIMSK1 = (1 << OCIE1A);
 }
 
@@ -426,7 +416,6 @@ ISR(INT0_vect)
                     currentAlarm = 0;
                 }
                 break;
-
             }
             extIntZeroTriggered ^= 0x01;
         }
