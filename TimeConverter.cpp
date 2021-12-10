@@ -1,4 +1,7 @@
+#ifndef TIMECONVERTER_H
+#define TIMECONVERTER_H 1
 #include "headers/TimeConverter.h"
+#endif
 
 int time = 720;
 int year = 2021;

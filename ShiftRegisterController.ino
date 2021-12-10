@@ -1,6 +1,10 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
+
+#ifndef SHIFTREGCONTROLL_H
+#define SHIFTREGCONTROLL_H 1
 #include "headers/ShiftRegisterController.h"
+#endif
 
 void SendData(unsigned char data)
 {

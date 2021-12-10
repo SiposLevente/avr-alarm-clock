@@ -1,9 +1,25 @@
 #include <avr/interrupt.h>
 #include <avr/io.h>
-#include "headers/AlarmClock.h"
+
+#ifndef ALARM_H
+#define ALARM_H 1
 #include "headers/Alarm.h"
-#include "headers/TimeConverter.h"
+#endif
+
+#ifndef ALARMCLOCK_H
+#define ALARMCLOCK_H 1
+#include "headers/AlarmClock.h"
+#endif
+
+#ifndef SHIFTREGCONTROLL_H
+#define SHIFTREGCONTROLL_H 1
 #include "headers/ShiftRegisterController.h"
+#endif
+
+#ifndef TIMECONVERTER_H
+#define TIMECONVERTER_H 1
+#include "headers/TimeConverter.h"
+#endif
 
 void DisplayTime(int digitNum)
 {
@@ -206,10 +222,16 @@ void Edit(int digitNum)
         }
         break;
 
-    // case 1:
-    //     Alarm tmpCurrAlarm = alarms[currentAlarm];
-
-    //     break;
+    case 1:
+        if (digitNum == selectedDigit && showDotPoint)
+        {
+            SendData(0x00);
+        }
+        else
+        {
+            SendData(digitNumbers[0]);
+        }
+        break;
     }
 }
 
@@ -407,15 +429,29 @@ ISR(INT0_vect)
                 break;
 
             case 1:
-                if (currentAlarm < ALARMCOUNT)
+                if (editMode)
                 {
-                    currentAlarm++;
+                    if (selectedDigit < 4)
+                    {
+                        selectedDigit++;
+                    }
+                    else
+                    {
+                        selectedDigit = 0;
+                    }
                 }
                 else
                 {
-                    currentAlarm = 0;
+                    if (currentAlarm < ALARMCOUNT)
+                    {
+                        currentAlarm++;
+                    }
+                    else
+                    {
+                        currentAlarm = 0;
+                    }
+                    break;
                 }
-                break;
             }
             extIntZeroTriggered ^= 0x01;
         }
