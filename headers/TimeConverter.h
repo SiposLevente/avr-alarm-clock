@@ -1,9 +1,16 @@
 // Outputs a single digit that is converted from the "Time" variable
 // The digit determines which part of the time is outputted
-// E.g.: (Time: 43200 [12:00]) -> TimeToNum(0) => output = 1
-// (Time: 43200 [12:00]) -> TimeToNum(1) => output = 2
+// E.g.: (Time: 720 [12:00]) -> TimeToNum(0) => output = 1
+// (Time: 720 [12:00]) -> TimeToNum(1) => output = 2
 // Acceptable value of digit: 0-3
 int TimeToNum(int digit);
+
+// Outputs a single digit that is converted from the given time
+// The digit determines which part of the time is outputted
+// E.g.: (Time: 720 [12:00]) -> TimeToNum(720, 0) => output = 1
+// (Time: 720 [12:00]) -> TimeToNum(720,1) => output = 2
+// Acceptable value of digit: 0-3
+int TimeToNum(int time, int digit);
 
 // Converts "date" variable to digits.
 // Acceptable value of digit: 0-3
