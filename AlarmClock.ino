@@ -223,11 +223,25 @@ void Edit(int digitNum)
         break;
 
     // case 1:
+    //     for (int i = 0; i < 4; i++)
+    //     {
+    //         tmpAlarmCache[i] = alarmCache[i];
+    //     }
+
+    //     if (digitNum == selectedDigit && showDotPoint)
+    //         {
+    //             SendData(0x00);
+    //         }
+    //         else
+    //         {
+    //             SendData(digitNumbers[tmpAlarmCache[digitNum]]);
+    //         }
+        
     //     if (incrementSelectedDigit)
     //     {
     //         /* code */
     //     }
-        
+
     //     break;
     }
 }
@@ -447,8 +461,9 @@ ISR(INT0_vect)
                     {
                         currentAlarm = 0;
                     }
-                    break;
+                    CacheAlarm();
                 }
+                break;
             }
             extIntZeroTriggered ^= 0x01;
         }

@@ -14,6 +14,10 @@
 #include "headers/ShiftRegisterController.h"
 #endif
 
+#ifndef TIMECONVERTER_H
+#define TIMECONVERTER_H 1
+#include "headers/TimeConverter.h"
+#endif
 
 void DisplayAlarms(int digitNum)
 {
@@ -24,5 +28,18 @@ void DisplayAlarms(int digitNum)
     else
     {
         SendData(digitLetters[digitNum]);
+    }
+}
+
+void DisplayAlarmTime(int digitNum)
+{
+    SendData(digitNumbers[alarmCache[digitNum]]);
+}
+
+void CacheAlarm()
+{
+    for (int i = 0; i < 4; i++)
+    {
+        alarmCache[i] = TimeToNum(alarms[currentAlarm].time, i);
     }
 }

@@ -12,7 +12,10 @@ struct Alarm
 unsigned char digitLetters[5] = {0x77, 0x38, 0x50, 0x79, 0x54};
 
 // Stores displayed alarm in a numerical format.
-extern unsigned int alarmCache[4];
+unsigned int alarmCache[4];
+
+// Stores temporary alarms when editing alams.
+unsigned int tmpAlarmCache[4];
 
 // Stores the currently selected alarm.
 unsigned char currentAlarm = 0;
@@ -27,3 +30,6 @@ void DisplayAlarms(int digitNum);
 // Displays the time of the currently selected alarm
 // digitNum = number of displayed digit.
 void DisplayAlarmTime(int digitNum);
+
+// Caches the currently selected alarm.
+void CacheAlarm();
