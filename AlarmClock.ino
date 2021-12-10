@@ -222,16 +222,13 @@ void Edit(int digitNum)
         }
         break;
 
-    case 1:
-        if (digitNum == selectedDigit && showDotPoint)
-        {
-            SendData(0x00);
-        }
-        else
-        {
-            SendData(digitNumbers[0]);
-        }
-        break;
+    // case 1:
+    //     if (incrementSelectedDigit)
+    //     {
+    //         /* code */
+    //     }
+        
+    //     break;
     }
 }
 
@@ -404,7 +401,7 @@ ISR(TIMER2_COMPA_vect)
 // Logic change trigger
 ISR(INT0_vect)
 {
-    if (inputEnable >= 4)
+    if (inputEnable >= ENABLECOUNTER)
     {
         if (extIntZeroTriggered == 0)
         {
@@ -467,7 +464,7 @@ ISR(INT0_vect)
 // Logic change trigger
 ISR(INT1_vect)
 {
-    if (inputEnable >= 4)
+    if (inputEnable >= ENABLECOUNTER)
     {
         if (editMode)
         {
@@ -489,7 +486,7 @@ ISR(INT1_vect)
 // Logic change trigger
 ISR(PCINT0_vect)
 {
-    if (inputEnable >= 4)
+    if (inputEnable >= ENABLECOUNTER)
     {
         btnPress ^= 0x01;
         if (!btnPress)

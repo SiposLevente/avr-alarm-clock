@@ -15,6 +15,7 @@
 #define NEXTBTN 2
 #define INCREMENTBTN 3
 #define MODESELECTBTN 7
+#define ENABLECOUNTER 8
 
 // Controlls the buzzer and the led
 // DDRB
